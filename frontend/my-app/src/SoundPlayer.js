@@ -6,9 +6,14 @@ import {Link} from "react-router-dom";
 class SoundPlayer extends React.Component {
   constructor(props) {
     super(props);
+    let tmp = []
+    if(props.location.state && props.location.state.selected){
+        tmp = props.location.state.selected
+    }
     this.state = {
       record: false,
-      blob: {recordedBlob:"", blobURL: ""}
+      blob: {recordedBlob:"", blobURL: ""},
+      selected : tmp
     }
   }
 
@@ -40,8 +45,14 @@ class SoundPlayer extends React.Component {
   }
 
   render() {
+      let text=""
+      if(this.state.selected.length > 0){
+          text = "Selected languages :"
+      }
     return (
       <div>
+        {text}
+        {this.state.selected.map((item,ix) =>{return <li key={ix}>{item}</li>})}
         <ReactMic
           record={this.state.record}
           className="sound-wave"
