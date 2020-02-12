@@ -54,7 +54,7 @@ class Selector extends React.Component {
                 <br/>
                 {text}
                 {this.state.selected.map((item,ix) =>{return <li key={ix}>{item}</li>})}
-            <Link to="/"> Next </Link>
+            <Link to="/player"> Next </Link>
             </React.Fragment>
         )
     }

@@ -14,17 +14,11 @@ class App extends React.Component {
   render() {
     return (
         <BrowserRouter>
-      <div>
-        <Switch>
-          <Route exact path="/">
-            <SoundPlayer> </SoundPlayer>
-          </Route>
-          <Route path="/selector">
-         <Selector />
-          </Route>
-        </Switch>
-      </div>
-    </BrowserRouter>
+            <Switch>
+                <Route path="/player" component={SoundPlayer} />
+                <Route path={"/" | "/selector" } component={Selector} />
+            </Switch>
+        </BrowserRouter>
     );
   }
 }
