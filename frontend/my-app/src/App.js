@@ -1,64 +1,24 @@
 import React from 'react';
 import './App.css';
-import { ReactMic } from 'react-mic';
+
+import {
+  BrowserRouter,
+  Switch,
+  Route
+} from "react-router-dom";
+import SoundPlayer from './SoundPlayer'
+import Selector from './Selector'
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      record: false,
-      blob: {recordedBlob:"", blobURL: ""}
-    }
-  }
-
-  startRecording = () => {
-    this.setState({ record: true });
-  }
-
-  stopRecording = () => {
-    this.setState({ record: false });
-  }
-
-  onData(recordedBlob) {
-    console.log('chunk of real-time data is: ', recordedBlob);
-  }
-
-  onStop(recordedBlob) {
-    console.log('recordedBlob is: ', recordedBlob);
-    this.setState({blob: recordedBlob})
-  }
-
-  onUpload() {
-    const formData = new FormData();
-    formData.append("filename", "myrecord2");
-    console.log(this.state.blob)
-    formData.append("file", this.state.blob.blob);
-    var request = new XMLHttpRequest();
-    request.open("POST", "http://127.0.0.1:5000/postfile");
-    request.send(formData);
-  }
 
   render() {
     return (
-      <div>
-        <ReactMic
-          record={this.state.record}
-          className="sound-wave"
-          backgroundColor="#333333"
-          visualSetting="sinewave"
-          strokeColor="#0096ef"
-          onStop={(blob) => this.onStop(blob)}
-          onData={this.onData}
-        />
-        <button onClick={this.startRecording} type="button">Start</button>
-        <button onClick={this.stopRecording} type="button">Stop</button>
-        <button onClick={() => this.onUpload()} type="button">Upload</button>
-        <br/>
-        <audio ref="audioSource" controls="controls" src={this.state.blob.blobURL} controlsList="nodownload"/>
-        <br/>
-        <audio  ref="audioSource" controls="controls" src="http://127.0.0.1:5000/files/myrecord.webm" />
-        <br/>
-      </div>
+        <BrowserRouter>
+            <Switch>
+                <Route path="/player" render={ (props) => <SoundPlayer {...props} />} />
+                <Route path={"/" | "/selector" } component={Selector} />
+            </Switch>
+        </BrowserRouter>
     );
   }
 }
