@@ -1,18 +1,10 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_marshmallow import Marshmallow
-from app import app
-
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///test.db"
-
-# Order matters: Initialize SQLAlchemy before Marshmallow
-db = SQLAlchemy(app)
-ma = Marshmallow(app)
+from run import app,db,ma,migrate
 
 class Record(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     filepath = db.Column(db.String, unique=True, nullable=False)
     lang = db.Column(db.String, nullable=False)
+    langfam = db.Column(db.String, nullable=False)
     added = db.Column(db.Boolean, nullable=False)
     pending = db.Column(db.Boolean, nullable=False) 
 
@@ -29,7 +21,7 @@ class Entry(db.Model):
         return '<Entry id {}>'.format(self.id)
 
 
-class BookSchema(ma.SQLAlchemyAutoSchema):
+class RecordSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Record
         include_fk = True
