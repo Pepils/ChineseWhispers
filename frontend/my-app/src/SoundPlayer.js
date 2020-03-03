@@ -36,11 +36,13 @@ class SoundPlayer extends React.Component {
 
   onUpload() {
     const formData = new FormData();
-    formData.append("filename", "myrecord2");
-    console.log(this.state.blob)
+    formData.append("filename", "myrecord3");
+    formData.append("lang", "urdu55");
+    formData.append("langfam", "urddoudou");
     formData.append("file", this.state.blob.blob);
+    console.log(this.state.blob)
     var request = new XMLHttpRequest();
-    request.open("POST", "http://127.0.0.1:5000/postfile");
+    request.open("POST", "http://127.0.0.1:5000/records");
     request.send(formData);
   }
 

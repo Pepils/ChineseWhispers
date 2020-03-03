@@ -16,7 +16,7 @@ class App extends React.Component {
         <BrowserRouter>
             <Switch>
                 <Route path="/player" render={ (props) => <SoundPlayer {...props} />} />
-                <Route path={"/" | "/selector" } component={Selector} />
+                <Route path={[ "/","/selector"]} component={Selector} />
             </Switch>
         </BrowserRouter>
     );

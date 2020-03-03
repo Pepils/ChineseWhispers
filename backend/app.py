@@ -18,20 +18,20 @@ class Hello(Resource):
     def get(self):
         return {"message": "Hello, World!"}
 
-
 class GetRecordResource(Resource):
     def get(self, record_id):
         record = Record.query.filter_by(id=record_id).first()
         if not record:
             return {'message': 'Record does not exist'}, 400
+
         res = jsonify(record_schema.dump(entry))
-        return { 'status':'success', 'data': res }, 200
+        return res 
 
 class RecordResource(Resource):
     def get(self):
         records = Record.query.all()
         records = jsonify(records_schema.dump(records))
-        return { 'status':'success', 'data': records }, 200
+        return records
     
     def delete(self):
         json_data = request.get_json(force=True)
@@ -44,8 +44,35 @@ class RecordResource(Resource):
         record = Record.query.filter_by(id=data['id']).delete()
         db.session.commit()
         res = jsonify(record_schema.dump(record))
-        return { "status": 'success', 'data': res }, 204
+        return res 
+        # return { "status": 'success', 'data': res }, 204
 
+    def post(self):
+        print(request.form)
+        print(request.files)
+        json_data = request.form.to_dict()
+        print(json_data)
+        if not json_data:
+            return {'message': 'No input data provided'}, 400
+        file = request.files['file']
+        if not file:
+            return {'message': 'No input file provided'}, 400
+        filename = json_data['filename']
+        file.save(os.path.join(os.getcwd(),"static",filename+".webm"))
+        # data, errors = record_schema.load(json_data)
+        # if errors:
+            # return errors, 422
+        record = Record(filepath=os.path.join(os.getcwd(),"static",filename+".webm"),
+                lang=json_data['lang'], 
+                langfam=json_data['langfam'],
+                added=False,
+                pending=True
+                )
+        db.session.add(record)
+        db.session.commit()
+        res = jsonify(record_schema.dump(record))
+        return res 
+        # return { 'status':'success', 'data': res }, 201
 
 class GetEntryResource(Resource):
     def get(self, entry_id):
@@ -53,13 +80,15 @@ class GetEntryResource(Resource):
         if not entry:
             return {'message': 'Entry does not exist'}, 400
         res = jsonify(entry_schema.dump(entry))
-        return { 'status':'success', 'data': res }, 200
+        return res 
+        # return { 'status':'success', 'data': res }, 200
 
 class EntryResource(Resource):
     def get(self):
         entries = Entry.query.all()
         entries = jsonify(entries_schema.dump(entries))
-        return { 'status':'success', 'data': entries }, 200
+        return entries
+        # return { 'status':'success', 'data': entries }, 200 
 
     def post(self):
         json_data = request.get_json(force=True)
@@ -74,7 +103,8 @@ class EntryResource(Resource):
         db.session.add(entry)
         db.session.commit()
         res = jsonify(entry_schema.dump(entry))
-        return { 'status':'success', 'data': res }, 201
+        return res 
+        # return { 'status':'success', 'data': res }, 201
 
     def put(self):
         json_data = request.get_json(force=True)
@@ -90,7 +120,8 @@ class EntryResource(Resource):
         entry.record_id = data['record_id']
         db.session.commit()
         res = jsonify(entry_schema.dump(entry))
-        return { "status": 'success', 'data': res }, 204
+        return res 
+        # return { "status": 'success', 'data': res }, 204
 
     def delete(self):
         json_data = request.get_json(force=True)
@@ -103,7 +134,8 @@ class EntryResource(Resource):
         entry = Entry.query.filter_by(id=data['id']).delete()
         db.session.commit()
         res = jsonify(entry_schema.dump(entry))
-        return { "status": 'success', 'data': res }, 204
+        return res 
+        # return { "status": 'success', 'data': res }, 204
 
 
 # Route
@@ -113,23 +145,21 @@ api.add_resource(GetRecordResource, '/records/<record_id>')
 api.add_resource(EntryResource, '/entries')
 api.add_resource(GetEntryResource, '/entries/<entry_id>')
 
-@app.route('/postfile', methods=['GET','POST'])
-@cross_origin()
-def upload_file():
-    if request.method == 'POST':
-        print(request.files)
-        print(request.form)
-        file = request.files['file']
-        if file:
-            filename = request.form['filename']
-            file.save(os.path.join(os.getcwd(), "static", filename+".webm"))
-        return "Hello"
-
+# @app.route('/postfile', methods=['GET','POST'])
+# @cross_origin()
+# def upload_file():
+#     if request.method == 'POST':
+#         print(request.files)
+#         print(request.form)
+#         file = request.files['file']
+#         if file:
+#             filename = request.form['filename']
+#             file.save(os.path.join(os.getcwd(), "static", filename+".webm"))
+#         return "Hello"
 @app.route('/files/<path:filename>')
 def download_file(filename):
     print(filename)
     return send_from_directory(os.getcwd()+"/static/", filename, as_attachment=True)
-
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
