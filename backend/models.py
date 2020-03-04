@@ -1,4 +1,5 @@
 from run import app,db,ma,migrate
+from marshmallow import EXCLUDE
 
 class Record(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -22,11 +23,15 @@ class Entry(db.Model):
 
 
 class RecordSchema(ma.SQLAlchemyAutoSchema):
+    id = ma.auto_field(dump_only=True)
     class Meta:
         model = Record
-        include_fk = True
+        unknown = EXCLUDE
 
 class EntrySchema(ma.SQLAlchemyAutoSchema):
+    id = ma.auto_field(dump_only=True)
     class Meta:
         model = Entry
         include_fk = True
+        unknown = EXCLUDE
+        # include_relationships = True

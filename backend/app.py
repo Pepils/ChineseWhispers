@@ -6,7 +6,7 @@ from models import Record, RecordSchema, Entry, EntrySchema
 from run import app,db,ma,migrate
 
 api = Api(app)
-cors = CORS(app, resources={r"/*": {"origins": "*"}})
+cors = CORS(app, resources={r"/*": {"origins": "*", "expose_headers": "X-Total-Count"}})
 
 records_schema = RecordSchema(many=True)
 record_schema = RecordSchema()
@@ -23,29 +23,51 @@ class GetRecordResource(Resource):
         record = Record.query.filter_by(id=record_id).first()
         if not record:
             return {'message': 'Record does not exist'}, 400
-
-        res = jsonify(record_schema.dump(entry))
+        res = jsonify(record_schema.dump(record))
         return res 
 
-class RecordResource(Resource):
-    def get(self):
-        records = Record.query.all()
-        records = jsonify(records_schema.dump(records))
-        return records
-    
-    def delete(self):
+    def put(self, record_id):
         json_data = request.get_json(force=True)
         if not json_data:
                return {'message': 'No input data provided'}, 400
-        # Validate and deserialize input
-        data, errors = record_schema.load(json_data)
-        if errors:
+        print(json_data)
+        try:
+            data = record_schema.load(json_data)
+        except ma.exceptions.ValidationError:
             return errors, 422
-        record = Record.query.filter_by(id=data['id']).delete()
+        record = Record.query.filter_by(id=record_id).first()
+        if not record:
+            return {'message': 'Record does not exist'}, 400
+        record.filepath = data['filepath']
+        record.lang = data['lang']
+        record.langfam = data['langfam']
+        record.added = data['added']
+        record.pending = data['pending']
         db.session.commit()
         res = jsonify(record_schema.dump(record))
         return res 
         # return { "status": 'success', 'data': res }, 204
+
+    def delete(self, record_id):
+        # json_data = request.get_json(force=True)
+        # if not json_data:
+               # return {'message': 'No input data provided'}, 400
+        # Validate and deserialize input
+        # data, errors = record_schema.load(json_data)
+        # if errors:
+            # return errors, 422
+        record = Record.query.filter_by(id=record_id).delete()
+        db.session.commit()
+        res = jsonify(record_schema.dump(record))
+        return res 
+        # return { "status": 'success', 'data': res }, 204
+
+class RecordResource(Resource):
+    def get(self):
+        records = Record.query.all()
+        res = jsonify(records_schema.dump(records))
+        res.headers["X-Total-Count"] = len(records)
+        return res
 
     def post(self):
         print(request.form)
@@ -83,19 +105,54 @@ class GetEntryResource(Resource):
         return res 
         # return { 'status':'success', 'data': res }, 200
 
+    def put(self, entry_id):
+        json_data = request.get_json(force=True)
+        if not json_data:
+               return {'message': 'No input data provided'}, 400
+        print(json_data)
+        try:
+            data = entry_schema.load(json_data)
+        except ma.exceptions.ValidationError:
+            return errors, 422
+        entry = Entry.query.filter_by(id=entry_id).first()
+        if not entry:
+            return {'message': 'Entry does not exist'}, 400
+        entry.text = data['text']
+        entry.record_id = data['record_id']
+        db.session.commit()
+        res = jsonify(entry_schema.dump(entry))
+        return res 
+        # return { "status": 'success', 'data': res }, 204
+
+    def delete(self, entry_id):
+        # json_data = request.get_json(force=True)
+        # if not json_data:
+        #        return {'message': 'No input data provided'}, 400
+        # # Validate and deserialize input
+        # data, errors = entry_schema.load(json_data)
+        # if errors:
+        #     return errors, 422
+        entry = Entry.query.filter_by(id=entry_id).delete()
+        db.session.commit()
+        res = jsonify(entry_schema.dump(entry))
+        return res 
+        # return { "status": 'success', 'data': res }, 204
+
 class EntryResource(Resource):
     def get(self):
         entries = Entry.query.all()
-        entries = jsonify(entries_schema.dump(entries))
-        return entries
+        res = jsonify(entries_schema.dump(entries))
+        res.headers["X-Total-Count"] = len(entries)
+        return res
         # return { 'status':'success', 'data': entries }, 200 
 
     def post(self):
         json_data = request.get_json(force=True)
         if not json_data:
             return {'message': 'No input data provided'}, 400
-        data, errors = entry_schema.load(json_data)
-        if errors:
+        try:
+            data = entry_schema.load(json_data)
+        except ma.exceptions.ValidationError:
             return errors, 422
         entry = Entry(text=json_data['text'], 
                 record_id=json_data['record_id']    
@@ -106,36 +163,7 @@ class EntryResource(Resource):
         return res 
         # return { 'status':'success', 'data': res }, 201
 
-    def put(self):
-        json_data = request.get_json(force=True)
-        if not json_data:
-               return {'message': 'No input data provided'}, 400
-        data, errors = entry_schema.load(json_data)
-        if errors:
-            return errors, 422
-        entry = Entry.query.filter_by(id=data['id']).first()
-        if not entry:
-            return {'message': 'Entry does not exist'}, 400
-        entry.text = data['text']
-        entry.record_id = data['record_id']
-        db.session.commit()
-        res = jsonify(entry_schema.dump(entry))
-        return res 
-        # return { "status": 'success', 'data': res }, 204
 
-    def delete(self):
-        json_data = request.get_json(force=True)
-        if not json_data:
-               return {'message': 'No input data provided'}, 400
-        # Validate and deserialize input
-        data, errors = entry_schema.load(json_data)
-        if errors:
-            return errors, 422
-        entry = Entry.query.filter_by(id=data['id']).delete()
-        db.session.commit()
-        res = jsonify(entry_schema.dump(entry))
-        return res 
-        # return { "status": 'success', 'data': res }, 204
 
 
 # Route
