@@ -3,5 +3,15 @@
 - [ ] improve error handling when entries already exists
 - [ ] test db introduction from request
 - [ ] make init db script (need examples)
-- [ ] make frontend for admin
-- [ ] ...
+- [x] make frontend for admin
+- [ ] add endpoints for get langages [ "a", "b", "c" ]
+- [ ] add endpoints for record by langage(by langfam, pending, added)
+- [ ] add table for lang and langfam (foreign keys)
+- [ ] filepath should be replaced by player
+
+# modifications
+- [ ] ecouter/traiter/DL/reupload
+- [ ] remove entry table
+- [ ] records -> recordings
+- [ ] add entries values in recordings
+- [ ] add origlang, transcript, and first name 
