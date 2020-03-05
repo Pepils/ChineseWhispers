@@ -6,19 +6,21 @@ import {
   Switch,
   Route
 } from "react-router-dom";
-import SoundPlayer from './SoundPlayer'
-import Selector from './Selector'
+import SoundPlayer from './views/SoundPlayer'
+import Selector from './views/Selector'
 
 class App extends React.Component {
 
   render() {
-    return (
-        <BrowserRouter>
-            <Switch>
-                <Route path="/player" render={ (props) => <SoundPlayer {...props} />} />
-                <Route path={[ "/","/selector"]} component={Selector} />
-            </Switch>
-        </BrowserRouter>
+      return (
+        <div className="App">
+            <BrowserRouter>
+                <Switch>
+                    <Route path="/player" render={ (props) => <SoundPlayer {...props} />} />
+                    <Route path={[ "/","/selector"]} component={Selector} />
+                </Switch>
+              </BrowserRouter>
+        </div>
     );
   }
 }

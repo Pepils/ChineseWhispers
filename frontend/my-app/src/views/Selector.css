@@ -1,0 +1,33 @@
+.Selector {
+    margin: 0;
+    padding: 0;
+}
+
+.Selector > h1 {
+    margin: 0;
+    padding: 40px;
+}
+
+.Selector > .lang-container {
+    width: 90%;
+    margin: 0 5%;
+}
+
+
+.LangItem {
+    display: inline-block;
+    width: 18%;
+    padding: 3% 1%;
+    margin: 2%;
+    background-color: #EFE9F4;
+    color: grey;
+    font-size: 200%;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+    .LangItem.selected {
+        background-color: #17BEBB;
+        color: lightgrey;
+    }

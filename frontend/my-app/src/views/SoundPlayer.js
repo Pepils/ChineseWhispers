@@ -1,6 +1,6 @@
 import React from 'react';
 import { ReactMic } from 'react-mic';
-import './App.css';
+import './SoundPlayer.css'
 import {Link} from "react-router-dom";
 
 class SoundPlayer extends React.Component {
@@ -68,7 +68,7 @@ class SoundPlayer extends React.Component {
         <button onClick={this.stopRecording} type="button">Stop</button>
         <button onClick={() => this.onUpload()} type="button">Upload</button>
         <br/>
-        <audio ref="audioSource" controls="controls" src={this.state.blob.blobURL} controlsList="nodownload"/>
+        <audio ref="audioSource" controls="" src={this.state.blob.blobURL} controlsList="nodownload"/>
         <br/>
         <audio  ref="audioSource" controls="controls" src="http://127.0.0.1:5000/files/myrecord.webm" />
         <br/>
