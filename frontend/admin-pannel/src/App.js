@@ -22,15 +22,16 @@ const dataProvider = jsonServerProvider('http://127.0.0.1:5000');
 
 const App = () => (
     <Admin dataProvider={dataProvider}>
-        <Resource name="records" list={RecordList} edit={RecordEdit}/>
-        <Resource name="entries" list={EntryList} edit={EntryEdit}/>
+        <Resource name="recordings" list={RecordingList} edit={RecordingEdit}/>
     </Admin>
 );
 
-const RecordList = props => (
+const RecordingList = props => (
     <List {...props}>
         <Datagrid rowClick="edit">
             <TextField source="id" />
+            <TextField source="transcript" />
+            <TextField source="name" />
             <TextField source="filepath" />
             <TextField source="lang" />
             <TextField source="langfam" />
@@ -39,36 +40,17 @@ const RecordList = props => (
         </Datagrid>
     </List>
 );
-const RecordEdit = props => (
+const RecordingEdit = props => (
     <Edit {...props}>
         <SimpleForm>
             <TextInput disabled source="id" />
+            <TextInput source="transcript" />
+            <TextInput source="name" />
             <TextInput source="filepath" />
             <TextInput source="lang" />
             <TextInput source="langfam" />
             <BooleanInput source="pending" />
             <BooleanInput source="added" />
-        </SimpleForm>
-    </Edit>
-);
-
-const EntryList = props => (
-    <List {...props}>
-        <Datagrid rowClick="edit">
-            <TextField source="id" />
-            <ReferenceField source="record_id" reference="records">
-                <TextField source="id" /></ReferenceField>
-            <TextField source="text" />
-        </Datagrid>
-    </List>
-);
-const EntryEdit = props => (
-    <Edit {...props}>
-        <SimpleForm>
-            <TextInput disabled source="id" />
-            <ReferenceInput source="record_id" reference="records">
-                <SelectInput optionText="id" /></ReferenceInput>
-            <TextInput source="text" />
         </SimpleForm>
     </Edit>
 );
