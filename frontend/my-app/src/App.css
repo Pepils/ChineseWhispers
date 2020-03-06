@@ -5,6 +5,7 @@
     text-align: center;
     background-color: #484D6D;
     color: lightcyan;
+    height: 100vh;
 }
 
 .left {
@@ -13,4 +14,24 @@
 
 .right {
     float: right;
+}
+
+h1 {
+    margin: 0 auto;
+    padding: 40px;
+    font-size: 350%;
+    font-weight: 500;
+}
+
+h2 {
+    margin: 0 auto;
+    padding: 40px;
+    font-size: 280%;
+    font-weight: 500;
+}
+
+p {
+    margin: auto;
+    width: 80%;
+    font-size: 250%;
 }

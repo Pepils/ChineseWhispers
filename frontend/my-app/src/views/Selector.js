@@ -18,7 +18,7 @@ class Selector extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            lang: ["French", "English", "Dutch", "German", "Spanish", "Chinese", "Other"],
+            lang: ["French", "English", "Dutch", "German", "Spanish", "Portugese", "Italian", "Polish", "Russian", "Hungarian", "Japanese", "Chinese", "Other"],
             selected: [],
         }
         this.onSelect = this.onSelect.bind(this);
@@ -57,10 +57,17 @@ class Selector extends React.Component {
 
         return (
             <div className="Selector">
-                <h1> Which languages do you speak? </h1>
+                <h1> Hi! Welcome to chinese Whispers </h1>
+                <p>    
+                    Select the languages you speak
+                </p>
                 <div className="lang-container">
                     {languages}
                 </div>
+
+                <p>
+                    Click Next when you are done
+                </p>
                 <Navigator prev next={this.submit} />
             </div>
         )
