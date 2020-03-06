@@ -1,0 +1,8 @@
+.Home {
+    padding-top: 30vh;
+}
+
+.Home > h1 {
+    font-size: 600%;
+}
+
