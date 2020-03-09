@@ -11,7 +11,7 @@
 
 # modifications
 - [ ] ecouter/traiter/DL/reupload
-- [ ] remove entry table
-- [ ] records -> recordings
-- [ ] add entries values in recordings
-- [ ] add origlang, transcript, and first name 
+- [x] remove entry table
+- [x] records -> recordings
+- [x] add entries values in recordings
+- [x] add origlang, transcript, and first name 
