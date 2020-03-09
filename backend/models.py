@@ -31,3 +31,9 @@ class RecordingSchema(ma.SQLAlchemyAutoSchema):
         unknown = EXCLUDE
         include_fk = True
 
+class LangSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Lang
+        # unknown = EXCLUDE
+        include_fk = True
+
