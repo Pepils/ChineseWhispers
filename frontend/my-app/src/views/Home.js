@@ -3,8 +3,6 @@ import { withRouter } from 'react-router-dom';
 
 import './Home.css';
 
-import Navigator from '../components/Navigator'
-
 function Home(props) {
 
     return (

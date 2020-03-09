@@ -1,0 +1,40 @@
+.AudioRecorder {
+    padding-top: 10vh;
+}
+
+.AudioRecorder > .counter {
+    height: 15vh;
+}
+
+    .AudioRecorder > .sound-wave {
+        height: 15vh;
+
+    }
+
+    .AudioRecorder > .sound-wave.hide {
+        display: none;
+    }
+
+.AudioRecorder > .button {
+    display: inline-block;
+    width: 15%;
+    padding: 2% 1%;
+    margin: 1.5%;
+    color: white;
+    font-size: 200%;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.red {
+    background-color: #EE6352;
+}
+
+.green {
+    background-color: #6BAB90;
+}
+
+.gray {
+    background-color: #CCCCCC;
+}

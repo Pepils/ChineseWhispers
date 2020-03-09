@@ -68,7 +68,7 @@ class Selector extends React.Component {
                 <p>
                     Click Next when you are done
                 </p>
-                <Navigator prev next={this.submit} />
+                <Navigator prev next={this.submit} valid={this.state.selected.length > 0} />
             </div>
         )
     }

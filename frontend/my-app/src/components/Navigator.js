@@ -5,11 +5,11 @@ import './Navigator.css';
 
 function Navigator(props) {
     const previous = props.prev && (
-        <div className="button red left" onClick={() => props.history.goBack()}> Back </div>
+        <div className="button red left" onClick={() => props.history.goBack() }> Back </div>
     );
 
     const next = props.next && (
-        <div className="button green right" onClick={() => props.next() }> Next </div>
+        <div className={props.valid ? "button green right" : "button gray right"} onClick={() => props.valid ? props.next() : false }> Next </div>
     );
 
     return (

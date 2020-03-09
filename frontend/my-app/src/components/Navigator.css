@@ -24,3 +24,7 @@
     .Navigator > .green {
         background-color: #6BAB90;
     }
+
+    .Navigator > .gray {
+        background-color: #CCCCCC;
+    }

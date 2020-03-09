@@ -10,8 +10,8 @@ import {
 
 import Home from './views/Home';
 import Selector from './views/Selector';
-import Player from './views/Player';
-import Recorder from './views/Recorder';
+import Play from './views/Play';
+import Record from './views/Record';
 import Finnish from './views/Finnish';
 
 class App extends React.Component {
@@ -41,7 +41,7 @@ class App extends React.Component {
     startTimer = () => {
         if (this.timerActivity) clearTimeout(this.timerActivity);
 
-        this.timerActivity = setTimeout((): void => this.redirect(), 30 * 1000);
+        this.timerActivity = setTimeout((): void => this.redirect(), 300 * 1000);
         if (this.state.redirect)
             this.setState({redirect: false})
     };
@@ -66,8 +66,8 @@ class App extends React.Component {
                     <Switch>
                         <Route exact path="/" component={Home} />
                         <Route path="/selector" component={Selector} />
-                        <Route path="/player" render={(props) => <Player {...props} />} />
-                        <Route path="/recorder" render={(props) => <Recorder {...props} />} />
+                        <Route path="/player" render={(props) => <Play {...props} />} />
+                        <Route path="/recorder" render={(props) => <Record {...props} />} />
                         <Route path="/finnish" component={Finnish} />
                     </Switch>
                 </BrowserRouter>

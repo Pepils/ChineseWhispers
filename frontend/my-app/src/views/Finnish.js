@@ -4,7 +4,7 @@ import './Finnish.css';
 
 function Finnish(props) {
 
-    let timerActivity = setTimeout(() => props.history.push('/'), 5 * 1000);
+    setTimeout(() => props.history.push('/'), 15 * 1000);
 
     return (
         <div className="Finnish">
