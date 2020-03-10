@@ -41,7 +41,7 @@ class App extends React.Component {
     startTimer = () => {
         if (this.timerActivity) clearTimeout(this.timerActivity);
 
-        this.timerActivity = setTimeout((): void => this.redirect(), 300 * 1000);
+        this.timerActivity = setTimeout((): void => this.redirect(), 20 * 1000);
         if (this.state.redirect)
             this.setState({redirect: false})
     };

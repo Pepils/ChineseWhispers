@@ -9,12 +9,9 @@ import AudioPlayer from '../components/AudioPlayer'
 class Play extends React.Component {
     constructor(props) {
         super(props);
-        let tmp = []
-        if(props.location.state && props.location.state.selected){
-            tmp = props.location.state.selected
-        }
+
         this.state = {
-            selected: tmp
+
         }
     }
 

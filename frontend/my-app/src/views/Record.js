@@ -20,6 +20,14 @@ class Record extends React.Component {
         this.startRecord = this.startRecord.bind(this);
     }
 
+    componentDidMount() {
+        var id = new Date().getTime();
+        this.setState({
+            //Setting the value of the date time
+            id: id
+        });
+    }
+
     componentWillUnmount() {
         this.setState({
             step: 0
@@ -49,19 +57,29 @@ class Record extends React.Component {
 
     }
 
-    uploadRecord() {
+    next = () => {
         const { record } = this.state;
         if (record.blob !== null) {
+            const name = "record_" + this.state.id;
+            console.log(name)
             const formData = new FormData();
-            formData.append("filename", "myrecord3");
+            formData.append("filename", name);
             formData.append("lang", "urdu55");
             formData.append("langfam", "urddoudou");
-            formData.append("file", record);
+            formData.append("file", record.blob);
+            formData.append("transcript", "");
+            formData.append("name", "");
 
             console.log(record);
 
             var request = new XMLHttpRequest();
-            request.open("POST", "http://127.0.0.1:5000/records");
+
+            request.upload.addEventListener("progress", () => { console.log("Progressing ...") });
+            request.upload.addEventListener("loadend", () => {
+                this.props.history.push('/finnish')
+            });
+
+            request.open("POST", "http://localhost:5000/recordings");
             request.send(formData);
         }
     }
@@ -114,7 +132,7 @@ class Record extends React.Component {
                     <AudioPlayer startTime={3} source={record.blobURL} />
                 </div>
 
-                <Navigator prev={!recording} valid={record.blob !== null ? true : false} next={() => this.props.history.push('/finnish')} />
+                <Navigator prev={!recording} valid={record.blob !== null ? true : false} next={() => this.next()} />
 
         
             </div>
