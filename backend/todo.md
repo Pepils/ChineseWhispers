@@ -4,9 +4,9 @@
 - [ ] test db introduction from request
 - [ ] make init db script (need examples)
 - [x] make frontend for admin
-- [ ] add endpoints for get langages [ "a", "b", "c" ]
+- [x] add endpoints for get langages [ "a", "b", "c" ]
 - [ ] add endpoints for record by langage(by langfam, pending, added)
-- [ ] add table for lang and langfam (foreign keys)
+- [x] add table for lang and langfam (foreign keys)
 - [ ] filepath should be replaced by player
 
 # modifications
