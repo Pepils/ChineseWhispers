@@ -19,6 +19,13 @@ class AudioRecorder extends React.Component {
         this.countDown = this.countDown.bind(this);
     }
 
+    componentWillUnmount() {
+        clearTimeout(this.timerActivity);
+        this.setState({
+            recording: false
+        });
+    }
+
     countDown () {
         let count = this.state.counter - 1;
         if (count > 0) {
@@ -55,8 +62,10 @@ class AudioRecorder extends React.Component {
     }
 
     onStop(recordedBlob) {
-        console.log('recordedBlob is: ', recordedBlob);
-        this.props.onRecord(recordedBlob);
+        if (this.state.preamb)
+            this.props.onRecord(null);
+        else
+            this.props.onRecord(recordedBlob);
     }
 
     render() {

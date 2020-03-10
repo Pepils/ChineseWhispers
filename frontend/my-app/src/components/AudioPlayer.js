@@ -30,6 +30,9 @@ class AudioPlayer extends React.Component {
     play() {
         const { player } = this.state;
 
+        const t0 = this.props.startTime ? this.props.startTime : 0;
+
+        player.currentTime = t0;
         player.play();
 
         this.setState({

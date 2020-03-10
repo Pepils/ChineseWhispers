@@ -1,3 +1,7 @@
+.Record {
+    padding: 10vh 0;
+}
+
 .Record > #explanations {
-    padding: 10vh;
+    height: 35vh;
 }

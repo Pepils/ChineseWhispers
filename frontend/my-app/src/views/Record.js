@@ -11,6 +11,7 @@ class Record extends React.Component {
        
         this.state = {
             step: 0,
+            recording: false,
             record: {
                 blob: null,
                 blobURL: null
@@ -19,18 +20,33 @@ class Record extends React.Component {
         this.startRecord = this.startRecord.bind(this);
     }
 
+    componentWillUnmount() {
+        this.setState({
+            step: 0
+        })
+    }
+
     startRecord() {
         this.setState({
-            step: 1
+            step: 1,
+            recording: true
         })
     }
 
     addRecord = (data) => {
-        console.log("Data: ", data)
-        this.setState({
-            record: data,
-            step: 2
-        })
+        if (data !== null) {
+            this.setState({
+                record: data,
+                step: 2,
+                recording: false
+            });
+        } else {
+            this.setState({
+                step: 0,
+                recording: false
+            });
+        }
+
     }
 
     uploadRecord() {
@@ -52,7 +68,7 @@ class Record extends React.Component {
 
     render() {
 
-        const { record, step } = this.state;
+        const { record, recording, step } = this.state;
 
         
 
@@ -75,15 +91,30 @@ class Record extends React.Component {
                         </p>
                     </div>
                 }
+                {step === 2 &&
+                    <div id="explanations">
+                        <p>
+                            Well done !
+                        </p>
+                        <br />
+                        <p>
+                            You can listen back to your recording. If it is ok for you, go "Next"
+                        </p>
+                        <br />
+                        <p>
+                            Or if you're not satisfied, try again by clicking "GO"
+                        </p>
+                    </div>
+                }
                 <div id="recording">
                     <AudioRecorder startRecord={this.startRecord} onRecord={this.addRecord} />
                 </div>
                 
                 <div id="listening">
-                    <AudioPlayer source={record.blobURL} />
+                    <AudioPlayer startTime={3} source={record.blobURL} />
                 </div>
 
-                <Navigator prev valid={record.blob !== null ? true : false} next={() => this.props.history.push('/finnish')} />
+                <Navigator prev={!recording} valid={record.blob !== null ? true : false} next={() => this.props.history.push('/finnish')} />
 
         
             </div>

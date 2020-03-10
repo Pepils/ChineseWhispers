@@ -5,3 +5,7 @@
 .Play > p:first-child {
     padding-top: 20vh;
 }
+
+.Play > .AudioPlayer {
+    margin: 10vh;
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import './Play.css'
+import clip from '../resources/Jacouille_OKAY.mp3';
 
 import Navigator from '../components/Navigator'
 import AudioPlayer from '../components/AudioPlayer'
@@ -29,7 +30,7 @@ class Play extends React.Component {
                     Put the headphones on, click on "Play" and close your eyes ...
                 </p>
 
-                <AudioPlayer onPlayed={() => { this.setState({ next: true }); }} source="https://archive.org/download/deepx010mix/deepx010M-01_-_Various_-_Deep-X_Vol.2_The_Mix__Mixed_By_AY_.mp3"/>
+                <AudioPlayer onPlayed={() => { this.setState({ next: true }); }} source={clip}/>
 
                 <p>
                     Now it's your turn to record in your nature language !

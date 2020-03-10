@@ -1,14 +1,19 @@
 .AudioRecorder {
-    padding-top: 10vh;
+    padding: 0;
 }
 
-.AudioRecorder > .counter {
-    height: 15vh;
-}
+    .AudioRecorder > .counter {
+        width: 100%;
+        height: 35vh;
+        font-size: 25vh;
+    }
 
     .AudioRecorder > .sound-wave {
-        height: 15vh;
-
+        height: 30vh;
+        width: 80%;
+        margin: auto;
+        margin-bottom: 5vh;
+        display: block;
     }
 
     .AudioRecorder > .sound-wave.hide {
