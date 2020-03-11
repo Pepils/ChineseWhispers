@@ -1,7 +1,7 @@
 ## Todo
 - [ ] improve error handling when file already exists
 - [ ] improve error handling when entries already exists
-- [ ] test db introduction from request
+- [x] test db introduction from request
 - [ ] make init db script (need examples)
 - [x] make frontend for admin
 - [x] add endpoints for get langages [ "a", "b", "c" ]

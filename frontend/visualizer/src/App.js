@@ -1,4 +1,7 @@
 import React from 'react';
+import { Layer, Grid } from 'react-mapping';
+
+const poem_id = 1
 
 class Visu extends React.Component {
     constructor(props) {
@@ -18,25 +21,30 @@ class Visu extends React.Component {
     }
 
     getPoems = () => {
-        fetch("http://127.0.0.1:5000/recordings")
+        fetch("http://127.0.0.1:5000/recordings?poem_id="+poem_id)
             .then(result => result.json())
             .then(result => this.setState({ poems: result }))
         this.timer = setTimeout(this.getPoems, 2000)
     }
 
+            /*  </React.Fragment> */
     render() {
         let poemlist = (
-            <React.Fragment>
-            {this.state.poems.map( (item,index) => (
-                <p style={textStyle}  key={index}>{ item.transcript }</p>
-                )
+            <div style={{ width:'500px', height:'1000px'  }}>
+            {this.state.poems.map( (item,index) => {
+                return <p style={textStyle}  key={index}>{ item.transcript }</p>
+                }
             )}
-            </React.Fragment>
+            </div>
         )
 
         return (
-            <div style={{marginTop: '100px'}}  >
+            <div style={{ height:'100vh', width:'100vw' }} >
+             <Grid/>
+            <Layer isEditMode={true}>
                 { poemlist }
+            {/* <div style={{marginTop: '100px'}} > </div> */}
+            </Layer>
             </div>
         )
     }
