@@ -5,9 +5,9 @@
 - [ ] make init db script (need examples)
 - [x] make frontend for admin
 - [x] add endpoints for get langages [ "a", "b", "c" ]
-- [ ] add endpoints for record by langage(by langfam, pending, added)
+- [x] add endpoints for record by langage(by langfam, pending, added)
 - [x] add table for lang and langfam (foreign keys)
-- [ ] filepath should be replaced by player
+- [x] filepath should be replaced by player
 
 # modifications
 - [ ] ecouter/traiter/DL/reupload

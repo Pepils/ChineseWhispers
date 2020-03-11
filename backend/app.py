@@ -1,4 +1,5 @@
 import os
+import json
 from flask import Flask, request, jsonify, send_from_directory
 from flask_restful import Api, Resource
 from flask_cors import CORS, cross_origin
@@ -13,6 +14,8 @@ cors = CORS(app, resources={r"/*": {"origins": "*", "expose_headers": "X-Total-C
 recordings_schema = RecordingSchema(many=True)
 recording_schema = RecordingSchema()
 
+lang_schema = LangSchema()
+langs_schema = LangSchema(many=True)
 # entries_schema = EntrySchema(many=True)
 # entry_schema = EntrySchema()
 
@@ -23,7 +26,7 @@ getlistargs = {
     "_end": fields.Int(),
     "id": fields.Int(),
     "name": fields.String(),
-    "lang": fields.String(),
+    "lang_id": fields.String(),
     "added": fields.Bool(),
     "pending": fields.Bool()
 }
@@ -53,7 +56,7 @@ class GetRecordingResource(Resource):
         if not recording:
             return {'message': 'Recording does not exist'}, 400
         recording.filepath = data['filepath']
-        recording.lang = data['lang']
+        recording.lang_id = data['lang_id']
         recording.langfam = data['langfam']
         recording.added = data['added']
         recording.pending = data['pending']
@@ -74,15 +77,26 @@ class GetRecordingResource(Resource):
             # return errors, 422
         recording = Recording.query.filter_by(id=recording_id).delete()
         db.session.commit()
-        res = jsonify(recording_schema.dump(recording))
-        return res 
-        # return { "status": 'success', 'data': res }, 204
+        # res = jsonify(recording_schema.dump(recording))
+        # return res 
+        return { 'id': recording }, 200
 
 class RecordingResource(Resource):
     @use_args(getlistargs, location="query")
     def get(self, args):
-        # recordings = Recording.query.all()
-        recordings = Recording.query.filter_by(lang=args['lang']).all()
+        recordings = Recording.query
+        if args.get('id') is not None:
+            recordings = recordings.filter_by(id=args['id'])
+        if args.get('name') is not None:
+            recordings = recordings.filter_by(name=args['name'])
+        if args.get('lang') is not None:
+            recordings = recordings.filter_by(lang=args['lang'])
+        if args.get('added') is not None:
+            recordings = recordings.filter_by(added=args['added'])
+        if args.get('pending') is not None:
+            recordings = recordings.filter_by(pending=args['pending'])
+        recordings = recordings.all()
+
         if args.get('_order') and args.get('_sort'):
             if args['_order'] == 'ASC':
                 recordings.sort(key=lambda x:getattr(x,args['_sort']))
@@ -97,23 +111,29 @@ class RecordingResource(Resource):
         return res
 
     def post(self):
-        print("dat:",request.data)
-        print("form:",request.form)
-        print("files:",request.files)
+        # print("dat:",request.data)
+        # print("form:",request.form)
+        # print("files:",request.files)
+        if request.data != b'':
+            json_file = json.loads(request.data).get('filepath')
+            recording = Recording.query.filter_by(filepath=json_file.get('title')).first()
+            res = jsonify(recording_schema.dump(recording))
+            return res
         json_data = request.form.to_dict()
-        print(json_data)
+        # print(json_data)
         if not json_data:
-            return {'message': 'No input data provided'}, 400
+            return {'message': 'no input data provided'}, 400
         file = request.files['file']
         if not file:
-            return {'message': 'No input file provided'}, 400
+            return {'message': 'no input file provided'}, 400
         filename = json_data['filename']
-        file.save(os.path.join(os.getcwd(),"static",filename+".webm"))
+        file.save(os.path.join(os.getcwd(),"static",filename))
         # data, errors = record_schema.load(json_data)
         # if errors:
             # return errors, 422
-        recording = Recording(filepath=os.path.join(os.getcwd(),"static",filename+".webm"),
-                lang=json_data['lang'], 
+        recording = Recording(#filepath=os.path.join(os.getcwd(),"static",filename+".webm"),
+                filepath=filename,
+                lang_id=json_data['lang_id'], 
                 langfam=json_data['langfam'],
                 added=False,
                 pending=True,
@@ -124,9 +144,7 @@ class RecordingResource(Resource):
         db.session.commit()
         res = jsonify(recording_schema.dump(recording))
         return res 
-        # return { 'status':'success', 'data': res }, 201
 
-langs_schema = LangSchema(many=True)
 class LangagesResource(Resource):
     @use_args(getlistargs, location="query")
     def get(self, args):
@@ -144,12 +162,63 @@ class LangagesResource(Resource):
         res.headers["X-Total-Count"] = len(lang)
         return res
 
+    def post(self):
+        # print("dat:",request.data)
+        json_data = json.loads(request.data)
+            # recording = recording.query.filter_by(filepath=json_file.get('title')).first()
+            # res = jsonify(recording_schema.dump(recording))
+            # return res
+        # json_data = request.form.to_dict()
+        # print(json_data)
+        if not json_data:
+            return {'message': 'no input data provided'}, 400
+        name = json_data['name']
+        # data, errors = record_schema.load(json_data)
+        # if errors:
+            # return errors, 422
+        lang = Lang(#filepath=os.path.join(os.getcwd(),"static",filename+".webm"),
+                name=json_data['name']
+                )
+        db.session.add(lang)
+        db.session.commit()
+        res = jsonify(recording_schema.dump(lang))
+        return res 
+
+
+
+class GetLangResource(Resource):
+    def get(self, lang_id):
+        lang = Lang.query.filter_by(id=lang_id).first()
+        if not lang:
+            return {'message': 'Lang does not exist'}, 400
+        res = jsonify(lang_schema.dump(lang))
+        return res 
+
+    def put(self, lang_id):
+        json_data = request.get_json(force=True)
+        if not json_data:
+               return {'message': 'No input data provided'}, 400
+        print(json_data)
+        try:
+            data = lang_schema.load(json_data)
+        except ma.exceptions.ValidationError:
+            return errors, 422
+        lang = Lang.query.filter_by(id=lang_id).first()
+        if not lang:
+            return {'message': 'Lang does not exist'}, 400
+        lang.name = data['name']
+        db.session.commit()
+        res = jsonify(lang_schema.dump(lang))
+        return res 
+        # return { "status": 'success', 'data': res }, 204
+
 
 # Route
 api.add_resource(Hello, '/Hello')
 api.add_resource(RecordingResource, '/recordings')
 api.add_resource(GetRecordingResource, '/recordings/<recording_id>')
 api.add_resource(LangagesResource, '/langages')
+api.add_resource(GetLangResource, '/langages/<lang_id>')
 # api.add_resource(EntryResource, '/entries')
 # api.add_resource(GetEntryResource, '/entries/<entry_id>')
 

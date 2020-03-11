@@ -2,6 +2,8 @@ import React from 'react';
 import { 
     Admin, 
     Resource,
+    ListGuesser,
+    EditGuesser,
     List,
     Edit,
     Create,
@@ -23,28 +25,44 @@ const dataProvider = jsonServerProvider('http://127.0.0.1:5000');
 const myDataProvider = {
     ...dataProvider,
     create: (resource, params) => {
-        if (resource !== 'recordings') { //|| !params.data.pictures) {
+        if (resource !== 'recordings') { 
             // fallback to the default implementation
             return dataProvider.create(resource, params)
         }
         console.log(params)
-        console.log(params.data.filepath.src)
+        // console.log(params.data.filepath.src)
         const formData = new FormData()
         formData.append("filename", params.data.filepath.title)
         formData.append('file', params.data.filepath.rawFile)
-        formData.append("lang", "");
-        formData.append("langfam","");
-        formData.append("transcript","");
-        formData.append("name","");
-
-        let request = new XMLHttpRequest()
-        request.open("POST", "http://127.0.0.1:5000/recordings")
-        request.send(formData);
-        return dataProvider.create( resource, {
-            ...params,
-            data: {
-                ...params.data,
-            }
+        formData.append("lang_id", params.data.lang_id);
+        formData.append("langfam",params.data.langfam);
+        formData.append("transcript",params.data.transcript);
+        formData.append("pending",params.data.pending);
+        formData.append("added",params.data.added);
+        formData.append("name",params.data.name);
+        let myreq = {
+            method:'POST',
+            mode: 'cors',
+            body: formData,
+        } 
+        // let request = new XMLHttpRequest()
+        // request.open("POST", "http://127.0.0.1:5000/recordings")
+        // return new Promise(resolve => {
+        //     request.send(formData, (err,resp,body) => {
+        //             console.log(err,resp,body)
+        //             if (!err) resolve(body)
+        //             }
+        //         )})
+        return fetch("http://127.0.0.1:5000/recordings", myreq)
+            .then( response => { 
+                console.log(response)
+                return dataProvider.create( resource, {
+                // ...params,
+                data: {
+                    ...params.data,
+                    }
+                }
+            )
         })
     },
 }
@@ -53,6 +71,7 @@ const myDataProvider = {
 const App = () => (
     <Admin dataProvider={myDataProvider}>
         <Resource name="recordings" list={RecordingList} edit={RecordingEdit} create={RecordingCreate}/>
+        <Resource name="langages" list={LangList} edit={LangEdit} create={LangCreate} />
     </Admin>
 );
 
@@ -66,9 +85,15 @@ const RecordingList = props => (
             <TextField source="id" />
             <TextField source="transcript" />
             <TextField source="name" />
-            <SoundField source="filepath" />
-            <TextField source="lang" />
+            <ReferenceField source="lang_id" reference="langages">
+                <TextField source="id" />
+            </ReferenceField>
+            <ReferenceField source="poem_id" reference="poems">
+                <TextField source="id" />
+            </ReferenceField>
+            <SoundField source="url" />
             <TextField source="langfam" />
+            <TextField source="filepath" />
             <BooleanField source="pending" />
             <BooleanField source="added" />
         </Datagrid>
@@ -82,7 +107,7 @@ const RecordingEdit = props => (
             <TextInput source="transcript" />
             <TextInput source="name" />
             <TextInput source="filepath" />
-            <TextInput source="lang" />
+            <TextInput source="lang_id" />
             <TextInput source="langfam" />
             <BooleanInput source="pending" />
             <BooleanInput source="added" />
@@ -95,7 +120,7 @@ const RecordingCreate = props => (
         <SimpleForm>
             <TextInput source="transcript" />
             <TextInput source="name" />
-            <TextInput source="lang" />
+            <TextInput source="lang_id" />
             <FileInput source="filepath" >
                 <FileField source="src" title="title" />
             </FileInput>
@@ -105,5 +130,32 @@ const RecordingCreate = props => (
         </SimpleForm>
     </Create>
 );
+
+const LangEdit = props => (
+    <Edit {...props}>
+        <SimpleForm>
+            <TextInput source="name"/>
+        </SimpleForm>
+    </Edit>
+)
+
+const LangCreate = props => (
+    <Create {...props}>
+        <SimpleForm>
+            <TextInput source="name"/>
+        </SimpleForm>
+    </Create>
+)
+
+const LangList = props => (
+    <List {...props}>
+        <Datagrid rowClick="edit">
+            <TextField source="id" />
+            <TextField source="name" />
+        </Datagrid>
+    </List>
+)
+
+
 
 export default App;
