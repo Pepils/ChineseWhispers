@@ -8,6 +8,9 @@ class Lang(db.Model):
     # id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text, primary_key=True, unique=True)
 
+    def __repr__(self):
+        return '<Lang: {}>'.format(self.name)
+
 class Recording(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text)

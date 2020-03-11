@@ -2,6 +2,8 @@ import os
 from flask import Flask, request, jsonify, send_from_directory
 from flask_restful import Api, Resource
 from flask_cors import CORS, cross_origin
+from webargs.flaskparser import parser, use_args, use_kwargs
+from webargs import fields, validate
 from models import Recording, RecordingSchema, Lang, LangSchema 
 from run import app,db,ma,migrate
 
@@ -13,6 +15,13 @@ recording_schema = RecordingSchema()
 
 # entries_schema = EntrySchema(many=True)
 # entry_schema = EntrySchema()
+
+getlistargs = {
+    "_sort": fields.String(),
+    "_order": fields.String(),
+    "_start": fields.Int(),
+    "_end": fields.Int()
+}
 
 class Hello(Resource):
     def get(self):
@@ -65,15 +74,26 @@ class GetRecordingResource(Resource):
         # return { "status": 'success', 'data': res }, 204
 
 class RecordingResource(Resource):
-    def get(self):
+    @use_args(getlistargs, location="query")
+    def get(self, args):
         recordings = Recording.query.all()
+        if args.get('_order') and args.get('_sort'):
+            if args['_order'] == 'ASC':
+                recordings.sort(key=lambda x:getattr(x,args['_sort']))
+            else:
+                recordings.sort(key=lambda x:getattr(x,args['_sort']), reverse=True)
+        if not args.get('_start') is None and not args.get('_end') is None:
+            print('rm')
+            recordings = recordings[args['_start']:args['_end']]
+
         res = jsonify(recordings_schema.dump(recordings))
         res.headers["X-Total-Count"] = len(recordings)
         return res
 
     def post(self):
-        print(request.form)
-        print(request.files)
+        print("dat:",request.data)
+        print("form:",request.form)
+        print("files:",request.files)
         json_data = request.form.to_dict()
         print(json_data)
         if not json_data:
@@ -102,8 +122,18 @@ class RecordingResource(Resource):
 
 langs_schema = LangSchema(many=True)
 class LangagesResource(Resource):
-    def get(self):
+    @use_args(getlistargs, location="query")
+    def get(self, args):
         lang = Lang.query.all()
+        if args.get('_order') and args.get('_sort'):
+            if args['_order'] == 'ASC':
+                lang.sort(key=lambda x:getattr(x,args['_sort']))
+            else:
+                lang.sort(key=lambda x:getattr(x,args['_sort']), reverse=True)
+        if not args.get('_start') is None and not args.get('_end') is None:
+            print('rm')
+            lang = lang[args['_start']:args['_end']]
+
         res = jsonify(langs_schema.dump(lang))
         res.headers["X-Total-Count"] = len(lang)
         return res
