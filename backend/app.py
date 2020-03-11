@@ -20,7 +20,12 @@ getlistargs = {
     "_sort": fields.String(),
     "_order": fields.String(),
     "_start": fields.Int(),
-    "_end": fields.Int()
+    "_end": fields.Int(),
+    "id": fields.Int(),
+    "name": fields.String(),
+    "lang": fields.String(),
+    "added": fields.Bool(),
+    "pending": fields.Bool()
 }
 
 class Hello(Resource):
@@ -76,7 +81,8 @@ class GetRecordingResource(Resource):
 class RecordingResource(Resource):
     @use_args(getlistargs, location="query")
     def get(self, args):
-        recordings = Recording.query.all()
+        # recordings = Recording.query.all()
+        recordings = Recording.query.filter_by(lang=args['lang']).all()
         if args.get('_order') and args.get('_sort'):
             if args['_order'] == 'ASC':
                 recordings.sort(key=lambda x:getattr(x,args['_sort']))
