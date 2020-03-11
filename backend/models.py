@@ -17,7 +17,7 @@ class Recording(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text)
     # lang = db.Column(db.String)
-    lang_id = db.Column(db.Text, db.ForeignKey('lang.id'))
+    lang_id = db.Column(db.Integer, db.ForeignKey('lang.id'))
     lang = db.relationship("Lang", backref="recording") 
     langfam = db.Column(db.String)
     transcript = db.Column(db.Text)
@@ -35,7 +35,7 @@ class RecordingSchema(ma.SQLAlchemyAutoSchema):
     url = fields.Method("get_url", dump_only=True)
     
     def get_url(self, obj):
-        print(obj)
+        # print(obj)
         if getattr(obj,'filepath'):
             return "{}/{}".format(STATIC_URL,obj.filepath)
         else:
@@ -53,3 +53,9 @@ class LangSchema(ma.SQLAlchemyAutoSchema):
         unknown = EXCLUDE
         include_fk = True
 
+class PoemSchema(ma.SQLAlchemyAutoSchema):
+    id = ma.auto_field(dump_only=True)
+    class Meta:
+        model = Poem
+        unknown = EXCLUDE
+        include_fk = True

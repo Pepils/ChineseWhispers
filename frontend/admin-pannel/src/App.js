@@ -16,12 +16,16 @@ import {
     FileField,
     BooleanInput,
     TextInput,
+    EditButton,
     ReferenceField,
+    ReferenceManyField, 
     ReferenceInput,
 } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
-const dataProvider = jsonServerProvider('http://127.0.0.1:5000');
+const apiurl = 'http://127.0.0.1:5000'
+
+const dataProvider = jsonServerProvider(apiurl);
 const myDataProvider = {
     ...dataProvider,
     create: (resource, params) => {
@@ -53,7 +57,7 @@ const myDataProvider = {
         //             if (!err) resolve(body)
         //             }
         //         )})
-        return fetch("http://127.0.0.1:5000/recordings", myreq)
+        return fetch(apiurl+"/recordings", myreq)
             .then( response => { 
                 console.log(response)
                 return dataProvider.create( resource, {
@@ -72,6 +76,7 @@ const App = () => (
     <Admin dataProvider={myDataProvider}>
         <Resource name="recordings" list={RecordingList} edit={RecordingEdit} create={RecordingCreate}/>
         <Resource name="langages" list={LangList} edit={LangEdit} create={LangCreate} />
+        <Resource name="poems" list={PoemList} edit={PoemEdit}  />
     </Admin>
 );
 
@@ -86,7 +91,7 @@ const RecordingList = props => (
             <TextField source="transcript" />
             <TextField source="name" />
             <ReferenceField source="lang_id" reference="langages">
-                <TextField source="id" />
+                <TextField source="name" />
             </ReferenceField>
             <ReferenceField source="poem_id" reference="poems">
                 <TextField source="id" />
@@ -98,38 +103,49 @@ const RecordingList = props => (
             <BooleanField source="added" />
         </Datagrid>
     </List>
-);
+)
 
 const RecordingEdit = props => (
     <Edit {...props}>
         <SimpleForm>
             <TextInput disabled source="id" />
-            <TextInput source="transcript" />
             <TextInput source="name" />
-            <TextInput source="filepath" />
-            <TextInput source="lang_id" />
+            <ReferenceInput source="lang_id" reference="langages">
+                <SelectInput optionText="name" />
+            </ReferenceInput>
             <TextInput source="langfam" />
+            <TextInput source="transcript" />
+            <TextInput source="filepath" />
+            <TextInput disabled source="url" />
+            <ReferenceInput source="poem_id" reference="poems">
+                <SelectInput optionText="id" />
+            </ReferenceInput>
             <BooleanInput source="pending" />
             <BooleanInput source="added" />
         </SimpleForm>
     </Edit>
-);
+)
 
 const RecordingCreate = props => (
     <Create {...props}>
         <SimpleForm>
-            <TextInput source="transcript" />
             <TextInput source="name" />
-            <TextInput source="lang_id" />
+            <ReferenceInput source="lang_id" reference="langages">
+                <SelectInput optionText="name" />
+            </ReferenceInput>
+            <TextInput source="langfam" />
+            <TextInput source="transcript" />
             <FileInput source="filepath" >
                 <FileField source="src" title="title" />
             </FileInput>
-            <TextInput source="langfam" />
+            <ReferenceInput source="poem_id" reference="poems">
+                <SelectInput optionText="name" />
+            </ReferenceInput>
             <BooleanInput source="pending" />
             <BooleanInput source="added" />
         </SimpleForm>
     </Create>
-);
+)
 
 const LangEdit = props => (
     <Edit {...props}>
@@ -156,6 +172,34 @@ const LangList = props => (
     </List>
 )
 
+const PoemList = props => (
+    <List {...props}>
+        <Datagrid rowClick="edit">
+            <TextField source="id" />
+            <ReferenceManyField label="Recordings" reference="recordings" target="poem_id">
+                <Datagrid>
+                    <TextField source="name" />
+                    <TextField source="transcript" />
+                    <EditButton />
+                </Datagrid>
+            </ReferenceManyField>
+        </Datagrid>
+    </List>
+)
 
+const PoemEdit = props => (
+    <Edit {...props}>
+        <SimpleForm>
+            <TextInput disabled source="id" />
+            <ReferenceManyField label="Recordings" reference="recordings" target="poem_id">
+                <Datagrid>
+                    <TextField source="name" />
+                    <TextField source="transcript" />
+                    <EditButton />
+                </Datagrid>
+            </ReferenceManyField>
+        </SimpleForm>
+    </Edit>
+)
 
 export default App;
