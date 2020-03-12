@@ -23,7 +23,7 @@ import {
 } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
-const apiurl = 'http://127.0.0.1:5000'
+const apiurl = 'http://127.0.0.1'
 
 const dataProvider = jsonServerProvider(apiurl);
 const myDataProvider = {
@@ -39,6 +39,7 @@ const myDataProvider = {
         formData.append("filename", params.data.filepath.title)
         formData.append('file', params.data.filepath.rawFile)
         formData.append("lang_id", params.data.lang_id);
+        formData.append("poem_id", params.data.poem_id);
         formData.append("langfam",params.data.langfam);
         formData.append("transcript",params.data.transcript);
         formData.append("pending",params.data.pending);
@@ -139,7 +140,7 @@ const RecordingCreate = props => (
                 <FileField source="src" title="title" />
             </FileInput>
             <ReferenceInput source="poem_id" reference="poems">
-                <SelectInput optionText="name" />
+                <SelectInput optionText="id" />
             </ReferenceInput>
             <BooleanInput source="pending" />
             <BooleanInput source="added" />
