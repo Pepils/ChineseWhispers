@@ -23,7 +23,7 @@ import {
 } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
-const apiurl = 'http://127.0.0.1'
+const apiurl = 'http://127.0.0.1:5000'
 
 const dataProvider = jsonServerProvider(apiurl);
 const myDataProvider = {
@@ -36,30 +36,30 @@ const myDataProvider = {
         console.log(params)
         // console.log(params.data.filepath.src)
         const formData = new FormData()
-        formData.append("filename", params.data.filepath.title)
-        formData.append('file', params.data.filepath.rawFile)
-        formData.append("lang_id", params.data.lang_id);
-        formData.append("poem_id", params.data.poem_id);
-        formData.append("langfam",params.data.langfam);
-        formData.append("transcript",params.data.transcript);
-        formData.append("pending",params.data.pending);
-        formData.append("added",params.data.added);
-        formData.append("name",params.data.name);
-        let myreq = {
-            method:'POST',
-            mode: 'cors',
-            body: formData,
-        } 
-        // let request = new XMLHttpRequest()
-        // request.open("POST", "http://127.0.0.1:5000/recordings")
-        // return new Promise(resolve => {
-        //     request.send(formData, (err,resp,body) => {
-        //             console.log(err,resp,body)
-        //             if (!err) resolve(body)
-        //             }
-        //         )})
+        let myreq = {}
+        try {
+            formData.append("filepath", params.data.filepath.title)
+            formData.append('file', params.data.filepath.rawFile)
+            // formData.append("lang_id", params.data.lang_id);
+            // formData.append("poem_id", params.data.poem_id);
+            // formData.append("langfam",params.data.langfam);
+            formData.append("transcript",params.data.transcript);
+            formData.append("pending",params.data.pending);
+            formData.append("added",params.data.added);
+            formData.append("name",params.data.name);
+            myreq = {
+                method:'POST',
+                mode: 'cors',
+                body: formData,
+            }
+        } catch (err) {
+            return Promise.reject(err)    
+        }
         return fetch(apiurl+"/recordings", myreq)
-            .then( response => { 
+            .then( response => {
+                if (!response.ok) {
+                    return Promise.reject("Missing data")
+                }
                 console.log(response)
                 return dataProvider.create( resource, {
                 // ...params,

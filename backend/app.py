@@ -59,7 +59,7 @@ class GetRecordingResource(Resource):
             data = recording_schema.load(json_data)
         except exceptions.ValidationError:
             return {'error'}, 422
-        print("data:",data)
+        # print("data:",data)
         recording = Recording.query.filter_by(id=recording_id).first()
         if not recording:
             return {'message': 'Recording does not exist'}, 400
@@ -132,27 +132,30 @@ class RecordingResource(Resource):
             res = jsonify(recording_schema.dump(recording))
             return res
         json_data = request.form.to_dict()
-        # print(json_data)
+        print(json_data)
         if not json_data:
             return {'message': 'no input data provided'}, 400
         file = request.files['file']
         if not file:
             return {'message': 'no input file provided'}, 400
-        filename = json_data['filename']
-        file.save(os.path.join(os.getcwd(),"static",filename))
-        # data, errors = record_schema.load(json_data)
-        # if errors:
-            # return errors, 422
-        recording = Recording(#filepath=os.path.join(os.getcwd(),"static",filename+".webm"),
-                filepath=filename,
-                lang_id=json_data['lang_id'], 
-                poem_id=json_data['poem_id'], 
-                langfam=json_data['langfam'],
-                added=False,
-                pending=True,
-                transcript=json_data['transcript'],
-                name=json_data['name']
-                )
+        filepath = json_data['filepath']
+        file.save(os.path.join(os.getcwd(),"static",filepath))
+        try:
+            data = recording_schema.load(json_data)
+        except exceptions.ValidationError as err:
+            print(err)
+            return {'status': 400, 'message': 'error'}, 400
+        recording = data
+        # recording = Recording(#filepath=os.path.join(os.getcwd(),"static",filename+".webm"),
+        #         filepath=filepath,
+        #         lang_id=json_data['lang_id'], 
+        #         poem_id=json_data['poem_id'], 
+        #         langfam=json_data['langfam'],
+        #         added=False,
+        #         pending=True,
+        #         transcript=json_data['transcript'],
+        #         name=json_data['name']
+        #         )
         db.session.add(recording)
         db.session.commit()
         res = jsonify(recording_schema.dump(recording))
