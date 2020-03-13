@@ -56,21 +56,13 @@ class GetRecordingResource(Resource):
                return {'message': 'No input data provided'}, 400
         print("jsondata:", json_data)
         try:
-            data = recording_schema.load(json_data)
+            data = recording_schema.load(json_data, partial=True)
         except exceptions.ValidationError:
-            return {'error'}, 422
-        # print("data:",data)
+            return {'message': 'error'}, 422
         recording = Recording.query.filter_by(id=recording_id).first()
         if not recording:
             return {'message': 'Recording does not exist'}, 400
-        recording.filepath = data['filepath']
-        recording.lang_id = data['lang_id']
-        recording.poem_id = data['poem_id']
-        recording.langfam = data['langfam']
-        recording.added = data['added']
-        recording.pending = data['pending']
-        recording.name = data['name']
-        recording.transcript = data['transcript']
+        RecordingSchema().update(recording, data)
         db.session.commit()
         res = jsonify(recording_schema.dump(recording))
         return res 
@@ -222,13 +214,14 @@ class GetLangResource(Resource):
                return {'message': 'No input data provided'}, 400
         print(json_data)
         try:
-            data = lang_schema.load(json_data)
+            data = lang_schema.load(json_data, partial=True)
         except exceptions.ValidationError:
             return {'error'}, 422
         lang = Lang.query.filter_by(id=lang_id).first()
         if not lang:
             return {'message': 'Lang does not exist'}, 400
-        lang.name = data['name']
+        # lang.name = data.name
+        LangSchema().update(lang, data)
         db.session.commit()
         res = jsonify(lang_schema.dump(lang))
         return res 
@@ -262,7 +255,6 @@ class GetPoemResource(Resource):
         poem = Poem.query.filter_by(id=poem_id).first()
         if not poem:
             return {'message': 'Poem does not exist'}, 400
-        poem.name = data['name']
         db.session.commit()
         res = jsonify(poem_schema.dump(poem))
         return res 

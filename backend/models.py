@@ -34,43 +34,63 @@ class RecordingSchema(ma.SQLAlchemyAutoSchema):
     added = ma.auto_field(missing=False)
     pending = ma.auto_field(missing=True)
     url = fields.Method("get_url", dump_only=True)
+
+    def update(self, obj, data):
+        """Update object nullifying missing data"""
+        loadable_fields = [
+            k for k, v in self.fields.items() if not v.dump_only
+        ]
+        print(loadable_fields)
+        for name in loadable_fields:
+            setattr(obj, name, getattr(data,name))
     
     def get_url(self, obj):
         # print(obj)
-        # if getattr(obj,'filepath'):
-            # return "{}/{}".format(STATIC_URL,obj.filepath)
-        # else:
-        return "No data"
-
-    @post_load
-    def make_recording(self, data, **kwargs):
-        return Recording(**data)
+        if getattr(obj,'filepath'):
+            return "{}/{}".format(STATIC_URL,obj.filepath)
+        else:
+            return "No data"
 
     class Meta:
         model = Recording
         unknown = EXCLUDE
         include_fk = True
+        load_instance = True
 
 class LangSchema(ma.SQLAlchemyAutoSchema):
     id = ma.auto_field(dump_only=True)
 
-    @post_load
-    def make_lang(self, data, **kwargs):
-        return Lang(**data)
+    def update(self, obj, data):
+        """Update object nullifying missing data"""
+        loadable_fields = [
+            k for k, v in self.fields.items() if not v.dump_only
+        ]
+        print(loadable_fields)
+        for name in loadable_fields:
+            setattr(obj, name, getattr(data,name))
 
     class Meta:
         model = Lang
         unknown = EXCLUDE
         include_fk = True
+        load_instance = True
+
 
 class PoemSchema(ma.SQLAlchemyAutoSchema):
     id = ma.auto_field(dump_only=True)
 
-    @post_load
-    def make_poem(self, data, **kwargs):
-        return Poem(**data)
+    def update(self, obj, data):
+        """Update object nullifying missing data"""
+        loadable_fields = [
+            k for k, v in self.fields.items() if not v.dump_only
+        ]
+        print(loadable_fields)
+        for name in loadable_fields:
+            setattr(obj, name, getattr(data,name))
 
     class Meta:
         model = Poem
         unknown = EXCLUDE
         include_fk = True
+        load_instance = True
+
