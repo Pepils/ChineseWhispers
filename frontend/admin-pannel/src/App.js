@@ -44,6 +44,7 @@ const myDataProvider = {
             // formData.append("poem_id", params.data.poem_id);
             // formData.append("langfam",params.data.langfam);
             formData.append("transcript",params.data.transcript);
+            console.log(params.data.pending, params.data.added)
             formData.append("pending",params.data.pending);
             formData.append("added",params.data.added);
             formData.append("name",params.data.name);
@@ -62,7 +63,6 @@ const myDataProvider = {
                 }
                 console.log(response)
                 return dataProvider.create( resource, {
-                // ...params,
                 data: {
                     ...params.data,
                     }
@@ -77,7 +77,7 @@ const App = () => (
     <Admin dataProvider={myDataProvider}>
         <Resource name="recordings" list={RecordingList} edit={RecordingEdit} create={RecordingCreate}/>
         <Resource name="langages" list={LangList} edit={LangEdit} create={LangCreate} />
-        <Resource name="poems" list={PoemList} edit={PoemEdit}  />
+        <Resource name="poems" list={PoemList} edit={PoemEdit} create={PoemCreate} />
     </Admin>
 );
 
@@ -201,6 +201,14 @@ const PoemEdit = props => (
             </ReferenceManyField>
         </SimpleForm>
     </Edit>
+)
+
+const PoemCreate = props => (
+    <Create {...props}>
+        <SimpleForm>
+            <TextInput disabled source="id" />
+        </SimpleForm>
+    </Create>
 )
 
 export default App;

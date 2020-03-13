@@ -20,8 +20,6 @@ langs_schema = LangSchema(many=True)
 
 poem_schema = PoemSchema()
 poems_schema = PoemSchema(many=True)
-# entries_schema = EntrySchema(many=True)
-# entry_schema = EntrySchema()
 
 getlistargs = {
     "_sort": fields.String(),
@@ -54,11 +52,10 @@ class GetRecordingResource(Resource):
         json_data = request.get_json()
         if not json_data:
                return {'message': 'No input data provided'}, 400
-        print("jsondata:", json_data)
         try:
             data = recording_schema.load(json_data, partial=True)
-        except exceptions.ValidationError:
-            return {'message': 'error'}, 422
+        except exceptions.ValidationError as err:
+            return { 'message': err }, 422
         recording = Recording.query.filter_by(id=recording_id).first()
         if not recording:
             return {'message': 'Recording does not exist'}, 400
@@ -66,20 +63,10 @@ class GetRecordingResource(Resource):
         db.session.commit()
         res = jsonify(recording_schema.dump(recording))
         return res 
-        # return { "status": 'success', 'data': res }, 204
 
     def delete(self, recording_id):
-        # json_data = request.get_json(force=True)
-        # if not json_data:
-               # return {'message': 'No input data provided'}, 400
-        # Validate and deserialize input
-        # data, errors = record_schema.load(json_data)
-        # if errors:
-            # return errors, 422
         recording = Recording.query.filter_by(id=recording_id).delete()
         db.session.commit()
-        # res = jsonify(recording_schema.dump(recording))
-        # return res 
         return { 'id': recording }, 200
 
 
@@ -107,7 +94,6 @@ class RecordingResource(Resource):
             else:
                 recordings.sort(key=lambda x:getattr(x,args['_sort']), reverse=True)
         if not args.get('_start') is None and not args.get('_end') is None:
-            print('rm')
             recordings = recordings[args['_start']:args['_end']]
 
         res = jsonify(recordings_schema.dump(recordings))
@@ -119,12 +105,11 @@ class RecordingResource(Resource):
         # print("form:",request.form)
         # print("files:",request.files)
         if request.data != b'':
-            json_file = json.loads(request.data).get('filepath')
+            json_file = request.get_json().get('filepath')
             recording = Recording.query.filter_by(filepath=json_file.get('title')).first()
             res = jsonify(recording_schema.dump(recording))
             return res
         json_data = request.form.to_dict()
-        print(json_data)
         if not json_data:
             return {'message': 'no input data provided'}, 400
         file = request.files['file']
@@ -135,22 +120,10 @@ class RecordingResource(Resource):
         try:
             data = recording_schema.load(json_data)
         except exceptions.ValidationError as err:
-            print(err)
-            return {'status': 400, 'message': 'error'}, 400
-        recording = data
-        # recording = Recording(#filepath=os.path.join(os.getcwd(),"static",filename+".webm"),
-        #         filepath=filepath,
-        #         lang_id=json_data['lang_id'], 
-        #         poem_id=json_data['poem_id'], 
-        #         langfam=json_data['langfam'],
-        #         added=False,
-        #         pending=True,
-        #         transcript=json_data['transcript'],
-        #         name=json_data['name']
-        #         )
-        db.session.add(recording)
+            return { 'status': 400, 'message': err }, 400
+        db.session.add(data)
         db.session.commit()
-        res = jsonify(recording_schema.dump(recording))
+        res = jsonify(recording_schema.dump(data))
         return res 
 
 
@@ -170,7 +143,6 @@ class LangagesResource(Resource):
             else:
                 lang.sort(key=lambda x:getattr(x,args['_sort']), reverse=True)
         if not args.get('_start') is None and not args.get('_end') is None:
-            print('rm')
             lang = lang[args['_start']:args['_end']]
 
         res = jsonify(langs_schema.dump(lang))
@@ -178,25 +150,16 @@ class LangagesResource(Resource):
         return res
 
     def post(self):
-        # print("dat:",request.data)
-        json_data = json.loads(request.data)
-            # recording = recording.query.filter_by(filepath=json_file.get('title')).first()
-            # res = jsonify(recording_schema.dump(recording))
-            # return res
-        # json_data = request.form.to_dict()
-        # print(json_data)
+        json_data = request.get_json()
         if not json_data:
             return {'message': 'no input data provided'}, 400
-        name = json_data['name']
-        # data, errors = record_schema.load(json_data)
-        # if errors:
-            # return errors, 422
-        lang = Lang(#filepath=os.path.join(os.getcwd(),"static",filename+".webm"),
-                name=json_data['name']
-                )
-        db.session.add(lang)
+        try:
+            data = lang_schema.load(json_data, partial=True)
+        except exceptions.ValidationError as err:
+            return { 'message' : err }, 422
+        db.session.add(data)
         db.session.commit()
-        res = jsonify(lang_schema.dump(lang))
+        res = jsonify(lang_schema.dump(data))
         return res 
 
 
@@ -212,26 +175,21 @@ class GetLangResource(Resource):
         json_data = request.get_json(force=True)
         if not json_data:
                return {'message': 'No input data provided'}, 400
-        print(json_data)
         try:
             data = lang_schema.load(json_data, partial=True)
-        except exceptions.ValidationError:
-            return {'error'}, 422
+        except exceptions.ValidationError as err:
+            return { 'message' : err }, 422
         lang = Lang.query.filter_by(id=lang_id).first()
         if not lang:
             return {'message': 'Lang does not exist'}, 400
-        # lang.name = data.name
         LangSchema().update(lang, data)
         db.session.commit()
         res = jsonify(lang_schema.dump(lang))
         return res 
-        # return { "status": 'success', 'data': res }, 204
     
     def delete(self, lang_id):
         lang = Lang.query.filter_by(id=lang_id).delete()
         db.session.commit()
-        # res = jsonify(lang_schema.dump(lang))
-        # return res 
         return { 'id': lang }, 200
 
 
@@ -247,24 +205,21 @@ class GetPoemResource(Resource):
         json_data = request.get_json(force=True)
         if not json_data:
                return {'message': 'No input data provided'}, 400
-        print(json_data)
         try:
-            data = poem_schema.load(json_data)
-        except exceptions.ValidationError:
-            return errors, 422
+            data = poem_schema.load(json_data, partial=True)
+        except exceptions.ValidationError as err:
+            return { 'message': err }, 422
         poem = Poem.query.filter_by(id=poem_id).first()
         if not poem:
             return {'message': 'Poem does not exist'}, 400
+        PoemSchema().update(poem, data)
         db.session.commit()
         res = jsonify(poem_schema.dump(poem))
         return res 
-        # return { "status": 'success', 'data': res }, 204
     
     def delete(self, poem_id):
         poem = Poem.query.filter_by(id=poem_id).delete()
         db.session.commit()
-        # res = jsonify(poem_schema.dump(poem))
-        # return res 
         return { 'id': poem }, 200
 
 
@@ -282,7 +237,6 @@ class PoemsResource(Resource):
             else:
                 poem.sort(key=lambda x:getattr(x,args['_sort']), reverse=True)
         if not args.get('_start') is None and not args.get('_end') is None:
-            print('rm')
             poem = poem[args['_start']:args['_end']]
 
         res = jsonify(poems_schema.dump(poem))
@@ -290,27 +244,17 @@ class PoemsResource(Resource):
         return res
 
     def post(self):
-        # print("dat:",request.data)
-        json_data = json.loads(request.data)
-            # recording = recording.query.filter_by(filepath=json_file.get('title')).first()
-            # res = jsonify(recording_schema.dump(recording))
-            # return res
-        # json_data = request.form.to_dict()
-        # print(json_data)
+        json_data = request.get_json()
         if not json_data:
             return {'message': 'no input data provided'}, 400
-        name = json_data['name']
-        # data, errors = record_schema.load(json_data)
-        # if errors:
-            # return errors, 422
-        poem = Poem(#filepath=os.path.join(os.getcwd(),"static",filename+".webm"),
-                name=json_data['name']
-                )
-        db.session.add(poem)
+        try:
+            data = poem_schema.load(json_data, partial=True)
+        except exceptions.ValidationError as err:
+            return { 'message' : err }, 422
+        db.session.add(data)
         db.session.commit()
-        res = jsonify(poem_schema.dump(poem))
+        res = jsonify(poem_schema.dump(data))
         return res 
-
 
 # Route
 api.add_resource(Hello, '/Hello')
@@ -320,20 +264,7 @@ api.add_resource(LangagesResource, '/langages')
 api.add_resource(GetLangResource, '/langages/<lang_id>')
 api.add_resource(PoemsResource, '/poems')
 api.add_resource(GetPoemResource, '/poems/<poem_id>')
-# api.add_resource(EntryResource, '/entries')
-# api.add_resource(GetEntryResource, '/entries/<entry_id>')
 
-# @app.route('/postfile', methods=['GET','POST'])
-# @cross_origin()
-# def upload_file():
-#     if request.method == 'POST':
-#         print(request.files)
-#         print(request.form)
-#         file = request.files['file']
-#         if file:
-#             filename = request.form['filename']
-#             file.save(os.path.join(os.getcwd(), "static", filename+".webm"))
-#         return "Hello"
 @app.route('/files/<path:filename>')
 def download_file(filename):
     print(filename)
