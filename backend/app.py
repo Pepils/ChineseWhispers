@@ -112,7 +112,7 @@ class RecordingResource(Resource):
         json_data = request.form.to_dict()
         if not json_data:
             return {'message': 'no input data provided'}, 400
-        file = request.files['file']
+        file = request.files.get('file')
         if not file:
             return {'message': 'no input file provided'}, 400
         filepath = json_data['filepath']
@@ -121,6 +121,7 @@ class RecordingResource(Resource):
             data = recording_schema.load(json_data)
         except exceptions.ValidationError as err:
             return { 'status': 400, 'message': err }, 400
+        print(json_data)
         db.session.add(data)
         db.session.commit()
         res = jsonify(recording_schema.dump(data))
@@ -245,6 +246,7 @@ class PoemsResource(Resource):
 
     def post(self):
         json_data = request.get_json()
+        print(json_data)
         if not json_data:
             return {'message': 'no input data provided'}, 400
         try:

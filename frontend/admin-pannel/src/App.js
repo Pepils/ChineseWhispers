@@ -38,16 +38,15 @@ const myDataProvider = {
         const formData = new FormData()
         let myreq = {}
         try {
-            formData.append("filepath", params.data.filepath.title)
-            formData.append('file', params.data.filepath.rawFile)
-            // formData.append("lang_id", params.data.lang_id);
-            // formData.append("poem_id", params.data.poem_id);
-            // formData.append("langfam",params.data.langfam);
-            formData.append("transcript",params.data.transcript);
-            console.log(params.data.pending, params.data.added)
-            formData.append("pending",params.data.pending);
-            formData.append("added",params.data.added);
-            formData.append("name",params.data.name);
+            for (let [key, val] of Object.entries(params.data)) {
+                // console.log(key,val)
+                if (key === "filepath") {
+                    formData.append("filepath", val.title)
+                    formData.append('file', val.rawFile)
+                } else {
+                    formData.append(key,val)
+                }
+            }
             myreq = {
                 method:'POST',
                 mode: 'cors',
@@ -71,7 +70,6 @@ const myDataProvider = {
         })
     },
 }
-
 
 const App = () => (
     <Admin dataProvider={myDataProvider}>

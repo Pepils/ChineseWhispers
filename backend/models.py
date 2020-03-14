@@ -40,7 +40,7 @@ class RecordingSchema(ma.SQLAlchemyAutoSchema):
         loadable_fields = [
             k for k, v in self.fields.items() if not v.dump_only
         ]
-        print(loadable_fields)
+        # print(loadable_fields)
         for name in loadable_fields:
             setattr(obj, name, getattr(data,name))
     
@@ -65,7 +65,7 @@ class LangSchema(ma.SQLAlchemyAutoSchema):
         loadable_fields = [
             k for k, v in self.fields.items() if not v.dump_only
         ]
-        print(loadable_fields)
+        # print(loadable_fields)
         for name in loadable_fields:
             setattr(obj, name, getattr(data,name))
 
@@ -84,7 +84,7 @@ class PoemSchema(ma.SQLAlchemyAutoSchema):
         loadable_fields = [
             k for k, v in self.fields.items() if not v.dump_only
         ]
-        print(loadable_fields)
+        # print(loadable_fields)
         for name in loadable_fields:
             setattr(obj, name, getattr(data,name))
 
