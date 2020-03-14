@@ -12,6 +12,7 @@ class Record extends React.Component {
         this.state = {
             step: 0,
             recording: false,
+            prcessing: false,
             record: {
                 blob: null,
                 blobURL: null
@@ -45,8 +46,8 @@ class Record extends React.Component {
         if (data !== null) {
             this.setState({
                 record: data,
-                step: 2,
-                recording: false
+                recording: false,
+                processing: true
             });
         } else {
             this.setState({
@@ -54,28 +55,31 @@ class Record extends React.Component {
                 recording: false
             });
         }
-
+        this.next();
     }
 
     next = () => {
         const { record } = this.state;
+        const { prev_id, poem_id } = this.props.history.location.state;
         if (record.blob !== null) {
             const name = "record_" + this.state.id;
-            console.log(name)
             const formData = new FormData();
-            formData.append("filename", name);
-            formData.append("lang", "urdu55");
-            formData.append("langfam", "urddoudou");
+            formData.append("lang_id", 3)
             formData.append("file", record.blob);
-            formData.append("transcript", "");
-            formData.append("name", "");
-
-            console.log(record);
+            formData.append("filepath", name);
 
             var request = new XMLHttpRequest();
 
+            request.upload.addEventListener("error", () => {
+                this.setState({
+                    step: 0,
+                    recording: false,
+                    processing: false
+                })
+                alert("Server Error")
+            });
             request.upload.addEventListener("progress", () => { console.log("Progressing ...") });
-            request.upload.addEventListener("loadend", () => {
+            request.upload.addEventListener("load", () => {
                 this.props.history.push('/finnish')
             });
 
@@ -86,55 +90,45 @@ class Record extends React.Component {
 
     render() {
 
-        const { record, recording, step } = this.state;
+        const { record, recording, step, processing } = this.state;
 
         
 
         return (
-
             <div className="Record">
+                {processing ?
+                    (
+                        <h2> Processing ... </h2>
+                    ) : (
+                        <div >
 
-                {step === 0 &&
-                    <div id="explanations">
-                        <p>
-                            Inspired by the extract you just heard, it is your turn to feed the poem. You can listend to it again at any time.
-                        </p>
-                        <br />
-                        <p>
-                            When you are ready, click on "GO".
-                        </p>
-                        <br />
-                        <p>
-                            You will have 30 seconds to record what you have to say.
-                        </p>
-                    </div>
-                }
-                {step === 2 &&
-                    <div id="explanations">
-                        <p>
-                            Well done !
-                        </p>
-                        <br />
-                        <p>
-                            You can listen back to your recording. If it is ok for you, go "Next"
-                        </p>
-                        <br />
-                        <p>
-                            Or if you're not satisfied, try again by clicking "GO"
-                        </p>
-                    </div>
-                }
-                <div id="recording">
-                    <AudioRecorder startRecord={this.startRecord} onRecord={this.addRecord} />
-                </div>
-                
-                <div id="listening">
-                    <AudioPlayer startTime={3} source={record.blobURL} />
-                </div>
+                            {step === 0 &&
+                                <div id="explanations">
+                                    <p>
+                                        Now it's your turn to feed the poem: you will record the next 30 seconds of the story you just heard in your native language.
+                                    </p>
+                                    <br />
+                                    <p>
+                                        You can listen again to the recording by going back.
+                                    </p>
+                                    <br />
+                                    <p>
+                                        When you are ready, click on "GO".
+                                    </p>
+                                </div>
+                            }           
+                                <div id="recording">
+                                    <AudioRecorder startRecord={this.startRecord} onRecord={this.addRecord} />
+                                </div>
+                            <div id="listening" style={{display: "none"}}>
+                                <AudioPlayer startTime={3} source={record.blobURL} />
+                            </div>
 
-                <Navigator prev={!recording} valid={record.blob !== null ? true : false} next={() => this.next()} />
-
+                            <Navigator prev={!recording} valid={record.blob !== null ? true : false} next={() => this.next()} />
         
+                        </div >
+                    )
+                }
             </div>
         );
     }

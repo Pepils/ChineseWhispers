@@ -18,12 +18,47 @@ class Selector extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            lang: ["French", "English", "Dutch", "German", "Spanish", "Portugese", "Italian", "Polish", "Russian", "Hungarian", "Japanese", "Chinese", "Other"],
+            lang: [],
             selected: [],
+            loading: true
         }
         this.onSelect = this.onSelect.bind(this);
         this.submit = this.submit.bind(this);
     }
+
+    componentDidMount() {
+        console.log("load")
+        var xhr = new XMLHttpRequest;
+        xhr.open('GET', 'http://localhost:5000/langages');
+
+        xhr.onload = () => {
+            if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+                let data = JSON.parse(xhr.response);
+                var lang = [];
+                for (var i = 0; i < data.length; i++) {
+                    lang.push(data[i].name);
+                }
+
+                this.setState({
+                    loading: false,
+                    lang: lang
+                });
+            } else {
+                alert("Server Error");
+                this.props.history.push('/')
+            }
+        };
+
+        xhr.addEventListener("error", () => {
+            //alert("Server Error");
+            //this.props.history.push('/')
+            this.setState({
+                lang: ["French", "English", "Dutch", "Spanish", "Italian", "German", "Portuese", "Hungarian", "Japanese", "Chinese", "Other"]
+            })
+        });
+
+        xhr.send();
+    };
 
     onSelect(lang) {
         console.log(lang);
@@ -54,23 +89,30 @@ class Selector extends React.Component {
                 handleClick={this.onSelect}
             />
         ))
-
-        return (
-            <div className="Selector">
-                <h1> Hi! Welcome to chinese Whispers </h1>
-                <p>    
-                    Select the languages you speak
-                </p>
-                <div className="lang-container">
-                    {languages}
+        if (this.state.loading) {
+            return (
+                <div className="Selector">
+                    <h2> Loading ... </h2>
                 </div>
-
-                <p>
-                    Click Next when you are done
+            );
+        } else {
+            return (
+                <div className="Selector">
+                    <h1> Hi! Welcome to chinese Whispers </h1>
+                    <p>
+                        This is an interactive installation. Please select the languages you speak.
                 </p>
-                <Navigator prev next={this.submit} valid={this.state.selected.length > 0} />
-            </div>
-        )
+                    <div className="lang-container">
+                        {languages}
+                    </div>
+
+                    <p>
+                        Click "Next" when you are done
+                </p>
+                    <Navigator next={this.submit} valid={this.state.selected.length > 0} />
+                </div>
+            )
+        }
     }
 }
 

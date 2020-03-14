@@ -9,9 +9,9 @@
     .Navigator > .button {
         display: inline-block;
         width: 15%;
-        padding: 2% 1%;
-        margin: 2%;
-        font-size: 300%;
+        padding: 2vh 1%;
+        margin: 2.5vh;
+        font-size: 6vh;
         color: white;
         cursor: pointer;
         user-select: none;

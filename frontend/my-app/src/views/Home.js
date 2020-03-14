@@ -8,8 +8,7 @@ function Home(props) {
     return (
         <div className="Home" onClick={ () => props.history.push("/selector")}>
             <h1> Chinese Whispers </h1>
-            <p> Put a logo here? </p>
-            <p> Click on the screen to start the adventure </p>
+            <h2> Click on the screen to start </h2>
         </div>
     );
 }

@@ -1,9 +1,9 @@
 .Home {
     padding-top: 30vh;
-    height: 100vh;
+    height: 70vh;
 }
 
 .Home > h1 {
-    font-size: 600%;
+    font-size: 15vh;
 }
 

@@ -6,10 +6,10 @@
 .AudioPlayer > .audio-control {
     display: inline-block;
     width: 15%;
-    padding: 2% 1%;
-    margin: 0;
+    padding: 2vh 1%;
+    margin: 1.5vh;
     color: white;
-    font-size: 200%;
+    font-size: 4vh;
     text-align: center;
     cursor: pointer;
     user-select: none;

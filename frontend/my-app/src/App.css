@@ -19,19 +19,19 @@
 h1 {
     margin: 0 auto;
     padding: 40px;
-    font-size: 350%;
+    font-size: 9vh;
     font-weight: 500;
 }
 
 h2 {
     margin: 0 auto;
-    padding: 40px;
-    font-size: 280%;
-    font-weight: 500;
+    padding: 2vh;
+    font-size: 7vh;
+    font-weight: 400;
 }
 
 p {
     margin: auto;
     width: 80%;
-    font-size: 250%;
+    font-size: 5vh;
 }

@@ -10,7 +10,7 @@ function Finnish(props) {
         <div className="Finnish">
             <h1> Thank you for being part of this! </h1>
             <p>
-                When you leave the installation please go to the outside table where the translation will be processed
+                When you leave the installation please go to the table outside where your translation will be processed
             </p>
             <h2>
                 Goodbye!
