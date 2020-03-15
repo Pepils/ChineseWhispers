@@ -64,7 +64,7 @@ class Record extends React.Component {
         if (record.blob !== null) {
             const name = "record_" + this.state.id;
             const formData = new FormData();
-            formData.append("lang_id", 3)
+
             formData.append("file", record.blob);
             formData.append("filepath", name);
 

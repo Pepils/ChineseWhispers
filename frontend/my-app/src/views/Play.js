@@ -38,7 +38,7 @@ class Play extends React.Component {
 
                 // Filter non speaked languages
                 for (var i = 0; i < selected.length; i++) {
-                    data = data.filter((entry) => { return entry.lang_id !== selected[i] })
+                    data = data.filter((entry) => { return entry.lang_id !== selected[i].id })
                 }
 
                 // Select a recording randomly
@@ -47,6 +47,7 @@ class Play extends React.Component {
                     loading: false,
                     recording: recording
                 })
+                console.log(recording)
 
             } else {
                 alert("Server Error");
@@ -66,8 +67,8 @@ class Play extends React.Component {
         this.props.history.push({
             pathname: '/recorder',
             state: {
-                prev_id: this.state.recording.id,
-                poem: this.state.recording.poem_id
+                prev_id: this.state.recording ? this.state.recording.id : 0,
+                poem: this.state.recording ? this.state.recording.poem_id : 0
             }
         });
     }

@@ -9,7 +9,7 @@ function LangItem(props) {
 
     return (
         <div className={classname} onClick={ () => props.handleClick( props.lang ) } >
-            {props.lang}
+            {props.lang.name}
         </div>
     );
 }
@@ -36,7 +36,7 @@ class Selector extends React.Component {
                 let data = JSON.parse(xhr.response);
                 var lang = [];
                 for (var i = 0; i < data.length; i++) {
-                    lang.push(data[i].name);
+                    lang.push(data[i]);
                 }
 
                 this.setState({
@@ -53,7 +53,19 @@ class Selector extends React.Component {
             //alert("Server Error");
             //this.props.history.push('/')
             this.setState({
-                lang: ["French", "English", "Dutch", "Spanish", "Italian", "German", "Portuese", "Hungarian", "Japanese", "Chinese", "Other"]
+                lang: [
+                    { id: 1, name: "French" },
+                    { id: 2, name: "English" },
+                    { id: 3, name: "Dutch" },
+                    { id: 4, name: "Spanish" },
+                    { id: 5, name: "Italian" },
+                    { id: 6, name: "German" },
+                    { id: 7, name: "Portuese" },
+                    { id: 8, name: "Hungarian" },
+                    { id: 9, name: "Japanese" },
+                    { id: 10, name: "Chinese" },
+                    { id: 11, name: "Other" }
+                ]
             })
         });
 
