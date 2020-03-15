@@ -80,7 +80,7 @@ class RecordingResource(Resource):
         if args.get('name') is not None:
             recordings = recordings.filter_by(name=args['name'])
         if args.get('lang_id') is not None:
-            recordings = recordings.filter_by(lang=args['lang_id'])
+            recordings = recordings.filter_by(lang_id=args['lang_id'])
         if args.get('poem_id') is not None:
             recordings = recordings.filter_by(poem_id=args['poem_id'])
         if args.get('added') is not None:
