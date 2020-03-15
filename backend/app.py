@@ -29,6 +29,7 @@ getlistargs = {
     "id": fields.Int(),
     "name": fields.String(),
     "lang_id": fields.String(),
+    # "parent_id": fields.String(),
     "langfam": fields.String(),
     "poem_id": fields.String(),
     "added": fields.Bool(),
@@ -246,9 +247,9 @@ class PoemsResource(Resource):
 
     def post(self):
         json_data = request.get_json()
-        print(json_data)
-        if not json_data:
-            return {'message': 'no input data provided'}, 400
+        # print(type(json_data))
+        # if not json_data:
+            # return {'message': 'no input data provided'}, 400
         try:
             data = poem_schema.load(json_data, partial=True)
         except exceptions.ValidationError as err:

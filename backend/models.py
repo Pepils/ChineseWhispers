@@ -16,6 +16,8 @@ class Recording(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text)
     # lang = db.Column(db.String)
+    parent_id = db.Column(db.Integer, db.ForeignKey('recording.id'))
+    parent = db.relationship("Recording") 
     lang_id = db.Column(db.Integer, db.ForeignKey('lang.id'))
     lang = db.relationship("Lang", backref="recording") 
     langfam = db.Column(db.String)

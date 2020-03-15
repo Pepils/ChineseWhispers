@@ -95,6 +95,9 @@ const RecordingList = props => (
             <ReferenceField source="poem_id" reference="poems">
                 <TextField source="id" />
             </ReferenceField>
+            <ReferenceField source="parent_id" reference="recordings">
+                <TextField source="name" />
+            </ReferenceField>
             <SoundField source="url" />
             <TextField source="langfam" />
             <TextField source="filepath" />
@@ -119,6 +122,9 @@ const RecordingEdit = props => (
             <ReferenceInput source="poem_id" reference="poems">
                 <SelectInput optionText="id" />
             </ReferenceInput>
+            <ReferenceInput source="parent_id" reference="recordings">
+                <SelectInput optionText="name" />
+            </ReferenceInput>
             <BooleanInput source="pending" />
             <BooleanInput source="added" />
         </SimpleForm>
@@ -139,6 +145,9 @@ const RecordingCreate = props => (
             </FileInput>
             <ReferenceInput source="poem_id" reference="poems">
                 <SelectInput optionText="id" />
+            </ReferenceInput>
+            <ReferenceInput source="parent_id" reference="recordings">
+                <SelectInput optionText="name" />
             </ReferenceInput>
             <BooleanInput source="pending" />
             <BooleanInput source="added" />
