@@ -11,7 +11,7 @@
     "react-dom": "^16.13.0",
     "react-mapping": "^0.0.1",
     "react-scripts": "3.4.0",
-    "three": "^0.114.0",
+    "three": "^0.110.0",
     "whs": "^2.1.9"
   },
   "scripts": {

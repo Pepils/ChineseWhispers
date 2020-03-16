@@ -96,7 +96,7 @@ class Visu extends React.Component {
         this.timer = setTimeout(this.getPoems, 2000)
         
 
-         * texture.text = [
+        texture.text = [
             'Twinkle, twinkle, little star,',
             'How I wonder what you are!',
             'Up above the world so high,',
