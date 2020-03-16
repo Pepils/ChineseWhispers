@@ -9,8 +9,8 @@ const world = new WHS.App([
     new WHS.ElementModule(),
     new WHS.SceneModule(),
     new WHS.CameraModule({
-        position: new THREE.Vector3(0, 0, 50)
-        //rotation: new THREE.Vector3(-Math.PI / 8, 0, 0),
+        position: new THREE.Vector3(0, 0, 50),
+        rotation: new THREE.Vector3(-Math.PI / 8, 0, 0),
     }),
     new WHS.RenderingModule({ bgColor: 0x162129 }),
     new WHS.ResizeModule()
@@ -44,12 +44,12 @@ const texture = new TextTexture({
 
 const cylinder = new WHS.Cylinder({
     geometry: {
-        radiusTop: 4,
-        radiusBottom: 6,
-        height: 5,
-        radiusSegments: 12, // Number
+        radiusTop: 20,
+        radiusBottom: 30,
+        height: 32,
+        radiusSegments: 64, // Number
         heightSegments: 1, // Number
-        openEnded: false, // Boolean
+        openEnded: true, // Boolean
         thetaStart: 1.75 * Math.PI, // Number
         thetaLength: 0.5 * Math.PI // Number
     },
@@ -60,7 +60,7 @@ const cylinder = new WHS.Cylinder({
         map: texture
     }),
 
-    position: [0, 10, 0]
+    position: [0, -10, 5]
 });
 
 texture.redraw();
