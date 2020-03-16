@@ -3,7 +3,9 @@
     margin: 0;
     padding: 0;
     text-align: center;
+    /*background-image: url('./resources/background.jpg');*/
     background-color: white;
+    background-size: cover;
     color: black;
     height: 100vh;
     font-family: "Georgia", Times, sans-serif;
@@ -49,19 +51,19 @@ p {
 
 
     .button.disabled {
-        background-color: white;
-        color: lightgray;
-        border: solid 2px lightgrey;
+        background-color: grey;
+        color: lightgrey;
+        border: solid 2px grey;
     }
 
-    .button.active {
+    .button.selected {
         background-color: white;
         color: black;
         border: solid 2px black;
     }
 
 
-    .button.selected {
+    .button.active {
         background-color: black;
         color: white;
         border: solid 2px black;

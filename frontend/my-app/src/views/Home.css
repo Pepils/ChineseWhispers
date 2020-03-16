@@ -3,7 +3,10 @@
     height: 70vh;
 }
 
-.Home > h1 {
-    font-size: 15vh;
-}
+    .Home > h1 {
+        font-size: 9vw;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        color: white;
+        text-shadow: 2px 2px black, -2px -2px black, 2px -2px black, -2px 2px black, 0px 2px black, 2px 0px black, 0px -2px black, -2px 0px black;
+    }
 

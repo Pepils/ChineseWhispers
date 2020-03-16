@@ -1,7 +1,7 @@
 .Record > .container {
-    margin-top: 20vh;
+    padding-top: 20vh;
 }
 
-.Record > #explanations {
-    height: 45vh;
+.Record > div > #explanations {
+    height: 35vh;
 }
