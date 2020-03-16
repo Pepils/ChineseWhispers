@@ -2,10 +2,10 @@
 
 }
 
-.Play > p:first-child {
+.Play > div {
     padding-top: 20vh;
 }
 
-.Play > .AudioPlayer {
-    margin: 10vh;
+.Play > div > .AudioPlayer {
+    margin-top: 10vh !important;
 }

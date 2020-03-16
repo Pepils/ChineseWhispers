@@ -83,12 +83,12 @@ class AudioRecorder extends React.Component {
                 <ReactMic
                     record={recording}
                     className={(recording && !preamb) ? "sound-wave" : "sound-wave hide"}
-                    backgroundColor="#333333"
+                    backgroundColor="#000000"
                     visualSetting={"sinewave"}
-                    strokeColor="#0096ef"
+                    strokeColor="#ffffff"
                     onStop={(blob) => this.onStop(blob)}
                 />
-                <div className={recording ? "button red" : "button green"} onClick={() => { recording ? this.stopRecording() : this.startRecording() }} > {recording ? "Stop" : "GO!"} </div>
+                <div className={recording ? "button selected" : "button active"} onClick={() => { recording ? this.stopRecording() : this.startRecording() }} > {recording ? "Stop" : "GO!"} </div>
             </div>
         );
     }

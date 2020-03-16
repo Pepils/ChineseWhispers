@@ -9,20 +9,12 @@
 }
 
 
-.LangItem {
-    display: inline-block;
-    width: 15%;
-    padding: 2vh 1%;
+.Selector > .button {
     margin: 1.5vh;
-    background-color: #EFE9F4;
-    color: grey;
-    font-size: 4vh;
-    text-align: center;
-    cursor: pointer;
-    user-select: none;
 }
 
     .LangItem.selected {
-        background-color: #17BEBB;
-        color: lightgrey;
+        background-color: black;
+        color: white;
+        border-color: black;
     }

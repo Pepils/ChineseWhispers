@@ -5,26 +5,3 @@
     position: fixed;
     bottom: 0;
 }
-
-    .Navigator > .button {
-        display: inline-block;
-        width: 15%;
-        padding: 2vh 1%;
-        margin: 2.5vh;
-        font-size: 6vh;
-        color: white;
-        cursor: pointer;
-        user-select: none;
-    }
-
-    .Navigator > .red {
-        background-color: #EE6352;
-    }
-
-    .Navigator > .green {
-        background-color: #6BAB90;
-    }
-
-    .Navigator > .gray {
-        background-color: #CCCCCC;
-    }

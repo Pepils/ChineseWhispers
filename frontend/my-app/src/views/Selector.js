@@ -3,9 +3,10 @@ import './Selector.css';
 import { withRouter } from "react-router-dom";
 
 import Navigator from '../components/Navigator'
+import Loading from '../components/Loading'
 
 function LangItem(props) {
-    const classname = props.selected ? "LangItem selected" : "LangItem";
+    const classname = props.selected ? "button selected" : "button active";
 
     return (
         <div className={classname} onClick={ () => props.handleClick( props.lang ) } >
@@ -103,14 +104,12 @@ class Selector extends React.Component {
         ))
         if (this.state.loading) {
             return (
-                <div className="Selector">
-                    <h2> Loading ... </h2>
-                </div>
+                <Loading />
             );
         } else {
             return (
                 <div className="Selector">
-                    <h1> Hi! Welcome to chinese Whispers </h1>
+                    <h1> Hi! Welcome to Chinese Whispers </h1>
                     <p>
                         This is an interactive installation. Please select the languages you speak.
                 </p>

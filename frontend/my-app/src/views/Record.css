@@ -1,11 +1,7 @@
-.Record {
-    padding: 20vh 0;
+.Record > .container {
+    margin-top: 20vh;
 }
 
 .Record > #explanations {
-    height: 35vh;
-}
-
-.Record > h2 {
-    padding-top: 20vh;
+    height: 45vh;
 }

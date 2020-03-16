@@ -2,27 +2,3 @@
     padding: 0;
     margin: 0;
 }
-
-.AudioPlayer > .audio-control {
-    display: inline-block;
-    width: 15%;
-    padding: 2vh 1%;
-    margin: 1.5vh;
-    color: white;
-    font-size: 4vh;
-    text-align: center;
-    cursor: pointer;
-    user-select: none;
-}
-
-.red {
-    background-color: #EE6352;
-}
-
-.green {
-    background-color: #6BAB90;
-}
-
-.gray {
-    background-color: #CCCCCC;
-}

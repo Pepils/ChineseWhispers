@@ -4,6 +4,7 @@ import './Record.css'
 import Navigator from '../components/Navigator'
 import AudioPlayer from '../components/AudioPlayer'
 import AudioRecorder from '../components/AudioRecorder'
+import Loading from '../components/Loading'
 
 class Record extends React.Component {
     constructor(props) {
@@ -98,9 +99,9 @@ class Record extends React.Component {
             <div className="Record">
                 {processing ?
                     (
-                        <h2> Processing ... </h2>
+                        <Loading text="Processing ..." />
                     ) : (
-                        <div >
+                        <div className="container">
 
                             {step === 0 &&
                                 <div id="explanations">

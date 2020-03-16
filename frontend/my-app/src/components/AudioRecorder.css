@@ -4,12 +4,12 @@
 
     .AudioRecorder > .counter {
         width: 100%;
-        height: 35vh;
+        height: 45vh;
         font-size: 25vh;
     }
 
     .AudioRecorder > .sound-wave {
-        height: 30vh;
+        height: 40vh;
         width: 80%;
         margin: auto;
         margin-bottom: 5vh;
@@ -19,27 +19,3 @@
     .AudioRecorder > .sound-wave.hide {
         display: none;
     }
-
-.AudioRecorder > .button {
-    display: inline-block;
-    width: 15%;
-    padding: 2vh 1%;
-    margin: 1.5vh;
-    color: white;
-    font-size: 4vh;
-    text-align: center;
-    cursor: pointer;
-    user-select: none;
-}
-
-.red {
-    background-color: #EE6352;
-}
-
-.green {
-    background-color: #6BAB90;
-}
-
-.gray {
-    background-color: #CCCCCC;
-}

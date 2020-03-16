@@ -68,10 +68,10 @@ class AudioPlayer extends React.Component {
 
         const buttonClass = () => {
             if (src !== null) {
-                return playing ? "audio-control red" : "audio-control green"
+                return playing ? "button selected" : "button active"
             }
             else {
-                return "audio-control gray"
+                return "button disabled"
             }
         }
 

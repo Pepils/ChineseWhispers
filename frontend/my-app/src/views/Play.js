@@ -5,6 +5,7 @@ import clip from '../resources/Jacouille_OKAY.mp3';
 
 import Navigator from '../components/Navigator'
 import AudioPlayer from '../components/AudioPlayer'
+import Loading from '../components/Loading'
 
 function random_item(items) {
 
@@ -79,7 +80,7 @@ class Play extends React.Component {
             <div className="Play">
                 {loading ?
                     (
-                        <div> Loading </div>
+                        <Loading />
                     )
                     :
                     (
