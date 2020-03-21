@@ -22,6 +22,7 @@ import {
     ReferenceInput,
 } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
+import RichTextInput from 'ra-input-rich-text';
 
 const apiurl = 'http://127.0.0.1:5000'
 
@@ -33,7 +34,7 @@ const myDataProvider = {
             // fallback to the default implementation
             return dataProvider.create(resource, params)
         }
-        console.log(params)
+        // console.log(params)
         // console.log(params.data.filepath.src)
         const formData = new FormData()
         let myreq = {}
@@ -60,11 +61,44 @@ const myDataProvider = {
                 if (!response.ok) {
                     return Promise.reject("Missing data")
                 }
-                console.log(response)
+                // console.log(response)
                 return dataProvider.create( resource, {
                 data: {
                     ...params.data,
                     }
+                }
+            )
+        })
+    },
+    update: (resource, params) => {
+        if (resource !== 'recordings' || !params.data.newfilepath) { 
+            // fallback to the default implementation
+            return dataProvider.update(resource, params)
+        }
+        // console.log(params)
+        const formData = new FormData()
+        let myreq = {}
+        try {
+            if (params.data.newfilepath) {
+                formData.append("filepath", params.data.newfilepath.title)
+                formData.append('file', params.data.newfilepath.rawFile)
+                params.data.filepath = params.data.newfilepath.title
+            }
+            myreq = {
+                method:'POST',
+                mode: 'cors',
+                body: formData,
+            }
+        } catch (err) {
+            return Promise.reject(err)    
+        }
+        return fetch(apiurl+"/recordings/"+params.data.id, myreq)
+            .then( response => {
+                if (!response.ok) {
+                    return Promise.reject("Missing data")
+                }
+                return dataProvider.update( resource, {
+                ...params
                 }
             )
         })
@@ -79,10 +113,9 @@ const App = () => (
     </Admin>
 );
 
-const SoundField = ({ source, record = {} }) => <audio controls="controls" src={record[source]} controlsList="nodownload"/>
+const SoundField = ({ source, record = {} }) => <audio controls="controls" src={record[source]} controlsList="download"/>
 SoundField.defaultProps = { label: 'File' }
 
-            // <TextField source="filepath" />
 const RecordingList = props => (
     <List {...props}>
         <Datagrid rowClick="edit">
@@ -116,9 +149,12 @@ const RecordingEdit = props => (
                 <SelectInput optionText="name" />
             </ReferenceInput>
             <TextInput source="langfam" />
-            <TextInput source="transcript" />
-            <TextInput source="filepath" />
+            <RichTextInput source="transcript" />
+            <FileInput source="newfilepath" >
+                <FileField source="src" title="title" />
+            </FileInput>
             <TextInput disabled source="url" />
+            <SoundField source="url" />
             <ReferenceInput source="poem_id" reference="poems">
                 <SelectInput optionText="id" />
             </ReferenceInput>
@@ -139,7 +175,7 @@ const RecordingCreate = props => (
                 <SelectInput optionText="name" />
             </ReferenceInput>
             <TextInput source="langfam" />
-            <TextInput source="transcript" />
+            <RichTextInput source="transcript" />
             <FileInput source="filepath" >
                 <FileField source="src" title="title" />
             </FileInput>

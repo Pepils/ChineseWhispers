@@ -47,10 +47,24 @@ class GetRecordingResource(Resource):
         if not recording:
             return {'message': 'Recording does not exist'}, 400
         res = jsonify(recording_schema.dump(recording))
-        return res 
+        return res
+
+    def post(self, recording_id):
+        # print("form:",request.form)
+        # print("files:",request.files)
+        json_data = request.form.to_dict()
+        if not json_data:
+            return {'message': 'no input data provided'}, 400
+        file = request.files.get('file')
+        if not file:
+            return {'message': 'no input file provided'}, 400
+        filepath = json_data['filepath']
+        file.save(os.path.join(os.getcwd(),"static",filepath))
+
 
     def put(self, recording_id):
         json_data = request.get_json()
+        # print(json_data)
         if not json_data:
                return {'message': 'No input data provided'}, 400
         try:
