@@ -29,8 +29,8 @@ class Play extends React.Component {
 
     getPoems = () => {
         console.log("load")
-        var xhr = new XMLHttpRequest;
-        xhr.open('GET', 'http://localhost:5000/recordings');
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'http://localhost:3005/recordings');
 
         xhr.onload = () => {
             if (xhr.readyState === xhr.DONE && xhr.status === 200) {
@@ -57,8 +57,12 @@ class Play extends React.Component {
         };
 
         xhr.addEventListener("error", () => {
-            alert("Server Error");
-            this.props.history.push('/')
+            //alert("Server Error");
+            //this.props.history.push('/')
+            this.setState({
+                loading: false,
+                recording: null
+            })
         });
 
         xhr.send();

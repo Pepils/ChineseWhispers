@@ -24,7 +24,7 @@ import {
 import jsonServerProvider from 'ra-data-json-server';
 import RichTextInput from 'ra-input-rich-text';
 
-const apiurl = 'http://127.0.0.1:5000'
+const apiurl = 'http://127.0.0.1:3005'
 
 const dataProvider = jsonServerProvider(apiurl);
 const myDataProvider = {

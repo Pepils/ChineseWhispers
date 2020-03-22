@@ -29,8 +29,8 @@ class Selector extends React.Component {
 
     componentDidMount() {
         console.log("load")
-        var xhr = new XMLHttpRequest;
-        xhr.open('GET', 'http://localhost:5000/langages');
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'http://localhost:3005/langages');
 
         xhr.onload = () => {
             if (xhr.readyState === xhr.DONE && xhr.status === 200) {
@@ -66,7 +66,8 @@ class Selector extends React.Component {
                     { id: 9, name: "Japanese" },
                     { id: 10, name: "Chinese" },
                     { id: 11, name: "Other" }
-                ]
+                ],
+                loading: false
             })
         });
 

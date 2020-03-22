@@ -288,4 +288,4 @@ def download_file(filename):
     return send_from_directory(os.getcwd()+"/static/", filename, as_attachment=True)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0', port=3005, debug=True)

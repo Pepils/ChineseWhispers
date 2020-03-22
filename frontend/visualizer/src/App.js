@@ -69,7 +69,7 @@ class Visu extends React.Component {
     }
 
     getPoems = () => {
-        fetch("http://127.0.0.1:5000/recordings?")
+        fetch("http://127.0.0.1:3005/recordings?")
             .then(result => result.json())
             .then(result => {
                 let poems = [];
@@ -80,7 +80,7 @@ class Visu extends React.Component {
                     console.log("Item ", i, " index ", index);
                     if (index !== -1) {
                         poems[index].transcripts.push(record.transcript);
-                    } else {
+                    } else if(record.poem_id){
                         poems.push({
                             id: record.poem_id,
                             transcripts: [record.transcript]

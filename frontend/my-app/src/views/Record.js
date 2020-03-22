@@ -72,20 +72,23 @@ class Record extends React.Component {
             var request = new XMLHttpRequest();
 
             request.upload.addEventListener("error", () => {
-                this.setState({
+                /*this.setState({
                     step: 0,
                     recording: false,
                     processing: false
                 })
-                alert("Server Error")
+                alert("Server Error")*/
+                this.props.history.push('/finnish')
             });
             request.upload.addEventListener("progress", () => { console.log("Progressing ...") });
             request.upload.addEventListener("load", () => {
                 this.props.history.push('/finnish')
             });
 
-            request.open("POST", "http://localhost:5000/recordings");
+            request.open("POST", "http://localhost:3005/recordings");
             request.send(formData);
+        } else {
+            this.props.history.push('/finnish')
         }
     }
 
