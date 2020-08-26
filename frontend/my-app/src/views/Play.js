@@ -30,7 +30,7 @@ class Play extends React.Component {
     getPoems = () => {
         console.log("load")
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'http://localhost:3005/recordings');
+        xhr.open('GET', process.env.REACT_APP_API_URL+'/recordings');
 
         xhr.onload = () => {
             if (xhr.readyState === xhr.DONE && xhr.status === 200) {

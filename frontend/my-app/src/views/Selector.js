@@ -25,12 +25,13 @@ class Selector extends React.Component {
         }
         this.onSelect = this.onSelect.bind(this);
         this.submit = this.submit.bind(this);
+
     }
 
     componentDidMount() {
         console.log("load")
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'http://localhost:3005/langages');
+        xhr.open('GET', process.env.REACT_APP_API_URL +'/langages');
 
         xhr.onload = () => {
             if (xhr.readyState === xhr.DONE && xhr.status === 200) {

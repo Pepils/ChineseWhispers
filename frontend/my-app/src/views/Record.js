@@ -85,7 +85,7 @@ class Record extends React.Component {
                 this.props.history.push('/finnish')
             });
 
-            request.open("POST", "http://localhost:3005/recordings");
+            request.open("POST", process.env.REACT_APP_API_URL +"/recordings");
             request.send(formData);
         } else {
             this.props.history.push('/finnish')
