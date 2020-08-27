@@ -59,12 +59,13 @@ const myDataProvider = {
         return fetch(apiurl+"/recordings", myreq)
             .then( response => {
                 if (!response.ok) {
+                    console.log(response)
                     return Promise.reject("Missing data")
                 }
                 // console.log(response)
                 return dataProvider.create( resource, {
-                data: {
-                    ...params.data,
+                    data: {
+                        ...params.data,
                     }
                 }
             )
@@ -249,7 +250,7 @@ const PoemEdit = props => (
 const PoemCreate = props => (
     <Create {...props}>
         <SimpleForm>
-            <TextInput disabled source="id" />
+            <TextInput source="id" />
         </SimpleForm>
     </Create>
 )
