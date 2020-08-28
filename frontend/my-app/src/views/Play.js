@@ -24,7 +24,13 @@ class Play extends React.Component {
     }
 
     componentDidMount() {
-        this.getPoems();
+        if (this.state.recording == null) {
+            this.getPoems();
+        } else {
+            this.setState({
+                loading: false
+            })
+        }
     }
 
     getPoems = () => {
@@ -36,6 +42,12 @@ class Play extends React.Component {
             if (xhr.readyState === xhr.DONE && xhr.status === 200) {
                 let data = JSON.parse(xhr.response);
                 const { selected } = this.props.history.location.state; 
+
+                // Filter non added
+                data = data.filter((entry) => { return entry.added === true })
+
+                // Filter pending
+                data = data.filter((entry) => { return entry.pending !== true })
 
                 // Filter non speaked languages
                 for (var i = 0; i < selected.length; i++) {
@@ -72,8 +84,8 @@ class Play extends React.Component {
         this.props.history.push({
             pathname: '/recorder',
             state: {
-                prev_id: this.state.recording ? this.state.recording.id : 0,
-                poem: this.state.recording ? this.state.recording.poem_id : 0
+                parent_id: this.state.recording ? this.state.recording.id : null,
+                poem_id: this.state.recording ? this.state.recording.poem_id : null
             }
         });
     }

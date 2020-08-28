@@ -64,10 +64,19 @@ class Record extends React.Component {
         const { prev_id, poem_id } = this.props.history.location.state;
         if (record.blob !== null) {
             const name = "record_" + this.state.id;
+            const prev_data = this.props.location.state;
             const formData = new FormData();
 
             formData.append("file", record.blob);
             formData.append("filepath", name);
+            formData.append("name", name);
+            if (prev_data.poem_id != null) {
+                formData.append("poem_id", prev_data.poem_id);
+            }
+            if (prev_data.parent_id != null) {
+                formData.append("parent_id", prev_data.parent_id);
+            }
+
 
             var request = new XMLHttpRequest();
 
