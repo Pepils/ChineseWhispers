@@ -12,7 +12,9 @@ import Home from './views/Home';
 import Selector from './views/Selector';
 import Play from './views/Play';
 import Record from './views/Record';
+import Transcript from './views/Transcript';
 import Finnish from './views/Finnish';
+import Error from './views/Error';
 
 class App extends React.Component {
     constructor(props) {
@@ -68,7 +70,9 @@ class App extends React.Component {
                         <Route path="/selector" component={Selector} />
                         <Route path="/player" render={(props) => <Play {...props} />} />
                         <Route path="/recorder" render={(props) => <Record {...props} />} />
+                        <Route path="/transcript" render={(props) => <Transcript {...props} />} />
                         <Route path="/finnish" component={Finnish} />
+                        <Route path="/error" component={Error} />
                     </Switch>
                 </BrowserRouter>
             </div>

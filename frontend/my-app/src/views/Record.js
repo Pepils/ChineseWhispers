@@ -61,41 +61,17 @@ class Record extends React.Component {
 
     next = () => {
         const { record } = this.state;
-        const { prev_id, poem_id } = this.props.history.location.state;
+        const { parent_id, poem_id } = this.props.history.location.state;
         if (record.blob !== null) {
-            const name = "record_" + this.state.id;
-            const prev_data = this.props.location.state;
-            const formData = new FormData();
-
-            formData.append("file", record.blob);
-            formData.append("filepath", name);
-            formData.append("name", name);
-            if (prev_data.poem_id != null) {
-                formData.append("poem_id", prev_data.poem_id);
-            }
-            if (prev_data.parent_id != null) {
-                formData.append("parent_id", prev_data.parent_id);
-            }
-
-
-            var request = new XMLHttpRequest();
-
-            request.upload.addEventListener("error", () => {
-                /*this.setState({
-                    step: 0,
-                    recording: false,
-                    processing: false
-                })
-                alert("Server Error")*/
-                this.props.history.push('/finnish')
+            
+            this.props.history.push({
+                pathname: '/transcript',
+                state: {
+                    recording: record,
+                    parent_id: parent_id,
+                    poem_id: poem_id
+                }
             });
-            request.upload.addEventListener("progress", () => { console.log("Progressing ...") });
-            request.upload.addEventListener("load", () => {
-                this.props.history.push('/finnish')
-            });
-
-            request.open("POST", process.env.REACT_APP_API_URL +"/recordings");
-            request.send(formData);
         } else {
             this.props.history.push('/finnish')
         }
