@@ -4,6 +4,7 @@ import './Transcript.css'
 
 import Loading from '../components/Loading'
 import { Responsive, Dropdown, Grid, Input, TextArea, Form, Button, Segment } from 'semantic-ui-react'
+import ReactPlayer from 'react-player';
 
 
 class Transcript extends React.Component {
@@ -48,10 +49,7 @@ class Transcript extends React.Component {
     }
 
     handleDropDown(e, option) {
-        console.log(option)
-        console.log(this.state.langagesOptions)
         let selected = this.state.langagesOptions.find(obj => obj.value == option.value);
-        console.log(selected)
         this.setState({
             lang_id: selected.value,
             lang: selected.text
@@ -146,20 +144,18 @@ class Transcript extends React.Component {
             this.props.history.push('/finnish')
         });
 
-        for (var pair of formData.entries()) {
-            console.log(pair[0] + ', ' + pair[1]);
-        }
-
         request.open("POST", process.env.REACT_APP_API_URL + "/recordings");
         request.send(formData);
     }
 
     render() {
-        const { width, loading, langagesOptions, langage } = this.state;
+        const { width, loading, langagesOptions, langage, recording } = this.state;
         const textAlign = width >= Responsive.onlyTablet.minWidth ? 'left' : 'center';
-        console.log(width);
-        console.log(Responsive.onlyTablet)
-        console.log(textAlign);
+
+        const SoundField = () => <audio controls="controls" src={recording.blobURL} controlsList="download" />
+        SoundField.defaultProps = { label: 'File' }
+
+
         return (
             <div className="Transcript">
                 {loading ?
@@ -199,19 +195,20 @@ class Transcript extends React.Component {
                                             value={langage}
                                         />
                                     </Grid.Column>
-                                </Responsive>
-                                <Grid columns={1} container>
-                                    <Grid.Column textAlign='justified'>
-                                            Now please write the translation of what you just said. You can write in English or in French.
-                                            If needed you can listen to what you've just recorded through the audio player below.
-                                    </Grid.Column>
-                                    <Grid.Column>
+                                    <Grid.Row columns={2} textAlign='justified'>
+                                        Now please write the translation of what you just said. You can write in English or in French.
+                                        If needed you can listen to what you've just recorded through the audio player below.
+                                    </Grid.Row>
+                                    <Grid.Row columns={2} container textAlign='centered'>
+                                        <SoundField/>
+                                    </Grid.Row>
+                                    <Grid.Row columns={2} container>
                                         <TextArea placeholder="Transcript" name="transcript" value={this.state.transcript} onChange={this.handleChange} />
-                                    </Grid.Column>
-                                    <Grid.Column>
-                                        <Button type="submit" value="Submit"> Send </Button>
-                                    </Grid.Column>
-                                </Grid>
+                                    </Grid.Row>
+                                    <Grid.Row container textAlign="centered">
+                                        <Button id="submit" type="submit" value="Submit"> Send </Button>
+                                    </Grid.Row>
+                                </Responsive>
                             </Form>
 
                         </div>

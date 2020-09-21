@@ -2,3 +2,11 @@
     margin: 10vh 10vw;
     height: 70vh;
 }
+
+audio {
+    margin: 10vw 0;
+}
+
+#submit {
+    margin-top: 10vw;
+}
