@@ -88,6 +88,7 @@ class AudioRecorder extends React.Component {
                             backgroundColor="#000000"
                             visualSetting={"sinewave"}
                             strokeColor="#ffffff"
+                            mimeType="audio/wav"
                             onStop={(blob) => this.onStop(blob)}
                         />
                     </Grid.Column>

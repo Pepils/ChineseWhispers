@@ -4,8 +4,6 @@ import './Transcript.css'
 
 import Loading from '../components/Loading'
 import { Responsive, Dropdown, Grid, Input, TextArea, Form, Button, Segment } from 'semantic-ui-react'
-import ReactPlayer from 'react-player';
-
 
 class Transcript extends React.Component {
     constructor(props) {
