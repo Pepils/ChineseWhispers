@@ -2,8 +2,8 @@ import React from 'react';
 import { 
     Admin, 
     Resource,
-    ListGuesser,
-    EditGuesser,
+    Filter,
+    SearchInput,
     List,
     Edit,
     Create,
@@ -20,9 +20,12 @@ import {
     ReferenceField,
     ReferenceManyField, 
     ReferenceInput,
-} from 'react-admin';
+    Pagination
+} from 'react-admin'
 import jsonServerProvider from 'ra-data-json-server';
 import RichTextInput from 'ra-input-rich-text';
+
+import './App.css'
 
 const apiurl = process.env.REACT_APP_API_URL;
 
@@ -88,6 +91,11 @@ const myDataProvider = {
             myreq = {
                 method:'POST',
                 mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
                 body: formData,
             }
         } catch (err) {
@@ -117,11 +125,21 @@ const App = () => (
 const SoundField = ({ source, record = {} }) => <audio controls="controls" src={record[source]} controlsList="download"/>
 SoundField.defaultProps = { label: 'File' }
 
+
+const PostFilter = (props) => (
+    <Filter {...props}>
+        <TextInput label="id" source="id" />
+        <TextInput label="name" source="name" />
+    </Filter>
+);
+
+const PostPagination = props => <Pagination rowsPerPageOptions={[10, 25, 50, 100]} {...props} />;
+
 const RecordingList = props => (
-    <List {...props}>
+    <List {...props} filters={<PostFilter/>} pagination={<PostPagination />} perPage={25} sort={{ field: 'id', order: 'DESC' }}>
         <Datagrid rowClick="edit">
             <TextField source="id" />
-            <TextField source="transcript" />
+            <TextField source="transcript" className="transcript"/>
             <TextField source="name" />
             <ReferenceField source="lang_id" reference="langages">
                 <TextField source="name" />

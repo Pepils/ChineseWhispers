@@ -1,0 +1,6 @@
+.transcript {
+    display: block;
+    width: 40vw;
+    max-height: 13vh;
+    overflow: hidden;
+}
