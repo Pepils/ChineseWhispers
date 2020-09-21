@@ -1,20 +1,5 @@
 .Selector {
     margin: 0;
     padding: 0;
+    margin-bottom: 60px;
 }
-
-.Selector > .lang-container {
-    width: 80%;
-    margin: 1vh auto;
-}
-
-
-.Selector > .button {
-    margin: 1.5vh;
-}
-
-    .LangItem.selected {
-        background-color: black;
-        color: white;
-        border-color: black;
-    }

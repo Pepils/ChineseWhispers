@@ -1,7 +1,9 @@
 .Navigator {
     margin-top: 60px;
-    width: 100%;
+    width: 100vw;
     text-align: center;
     position: fixed;
     bottom: 0;
+    z-index: 5;
+    background-color: white;
 }

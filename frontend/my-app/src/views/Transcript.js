@@ -1,10 +1,9 @@
 import React from 'react';
 
 import './Transcript.css'
-import 'semantic-ui-css/semantic.min.css'
 
 import Loading from '../components/Loading'
-import { Dropdown, Grid, Input, TextArea, Form, Button} from 'semantic-ui-react'
+import { Responsive, Dropdown, Grid, Input, TextArea, Form, Button, Segment } from 'semantic-ui-react'
 
 
 class Transcript extends React.Component {
@@ -20,7 +19,8 @@ class Transcript extends React.Component {
             parent_id: parent_id,
             name: "",
             transcript: "",
-            langage: null,
+            lang_id: null,
+            lang: null,
             langagesOptions: null
         }
 
@@ -47,14 +47,21 @@ class Transcript extends React.Component {
         });
     }
 
-    handleDropDown(e, { value }) {
-        this.setState({ langage: value })
+    handleDropDown(e, option) {
+        console.log(option)
+        console.log(this.state.langagesOptions)
+        let selected = this.state.langagesOptions.find(obj => obj.value == option.value);
+        console.log(selected)
+        this.setState({
+            lang_id: selected.value,
+            lang: selected.text
+        })
     }
 
     handleSubmit(event) {
         event.preventDefault();
 
-        if (this.state.name !== "" && this.state.transcript !== "" && this.state.langage) {
+        if (this.state.name !== "" && this.state.transcript !== "" && this.state.lang_id) {
             this.postData();
             this.props.history.push({
                 pathname: '/finnish',
@@ -76,8 +83,12 @@ class Transcript extends React.Component {
                 const langagesOptions = data.map((lang, index) => ({
                     key: lang.name,
                     text: lang.name,
-                    value: lang.name
-                }));
+                    value: lang.id
+                })).sort(function (a, b) {
+                    var textA = a.key.toUpperCase();
+                    var textB = b.key.toUpperCase();
+                    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+                });
 
                 this.setState({
                     loading: false,
@@ -101,7 +112,7 @@ class Transcript extends React.Component {
         var d = new Date();
         var n = d.getTime();
 
-        const { poem_id, parent_id, recording, transcript, name, langage } = this.state;
+        const { poem_id, parent_id, recording, transcript, name, lang_id, lang } = this.state;
         const filename = name + n;
         const formData = new FormData();
 
@@ -109,7 +120,8 @@ class Transcript extends React.Component {
         formData.append("filepath", filename);
         formData.append("name", name);
         formData.append("transcript", transcript);
-        formData.append("lang", langage);
+        formData.append("lang_id", lang_id);
+        formData.append("lang", lang);
         if (poem_id != null) {
             formData.append("poem_id", poem_id);
         }
@@ -136,8 +148,8 @@ class Transcript extends React.Component {
             console.log(pair[0] + ', ' + pair[1]);
         }
 
-        //request.open("POST", process.env.REACT_APP_API_URL + "/recordings");
-        //request.send(formData);
+        request.open("POST", process.env.REACT_APP_API_URL + "/recordings");
+        request.send(formData);
     }
 
     render() {
@@ -152,39 +164,80 @@ class Transcript extends React.Component {
                     :
                     (
                         <div>
-                            <p>
-                                Now you are going to listen to a recording in a language you don't speak.
-                            </p>
+                            
                             <Form onSubmit={this.handleSubmit}>
-                                <Grid columns={2}>
+                                
+                                <Responsive minWidth={Responsive.onlyTablet.minWidth} as={Grid} columns={2} container>
                                     <Grid.Column>
-                                        <Input name="name" placeholder="Name" type="text" value={this.state.name} onChange={this.handleChange} />
-                                    </Grid.Column>
-                                    <Grid.Column>
-                                        <label>
-                                            Langage:
-                                            <Dropdown
-                                                onChange={this.handleDropDown}
-                                                button
-                                                floating
-                                                labeled
-                                                options={langagesOptions}
-                                                search
-                                                placeholder='Select Language'
-                                                value={langage}
-                                            />
-                                        </label>
+                                        <Segment.Group horizontal>
+                                            <Segment>
+                                                What is your name?
+                                            </Segment>
+                                                <Input name="name" placeholder="Name" type="text" value={this.state.name} onChange={this.handleChange} />
 
+                                        </Segment.Group>
                                     </Grid.Column>
-                                </Grid>
+                                    <Grid.Column>
+                                        <Segment.Group horizontal>
+                                            <Segment >
+                                                    Which language will you record in? 
+                                            </Segment>
+                                            <Segment >
+                                                <Dropdown
+                                                    onChange={this.handleDropDown}
+                                                    button
+                                                    floating
+                                                    labeled
+                                                    options={langagesOptions}
+                                                    search
+                                                    placeholder='Select Language'
+                                                    value={langage}
+                                                />
+                                            </Segment>
+                                        </Segment.Group>
+                                    </Grid.Column>
+                                </Responsive>
+
+                                <Responsive {...Responsive.onlyMobile} as={Grid} columns={1} container>
+                                    <Grid.Column>
+                                        <Segment.Group horizontal>
+                                            <Segment>
+                                                What is your name?
+                                            </Segment>
+                                            <Input name="name" placeholder="Name" type="text" value={this.state.name} onChange={this.handleChange} />
+
+                                        </Segment.Group>
+                                        <Segment.Group horizontal>
+                                            <Segment >
+                                                Which language will you record in?
+                                            </Segment>
+                                            <Segment >
+                                                <Dropdown
+                                                    onChange={this.handleDropDown}
+                                                    button
+                                                    floating
+                                                    labeled
+                                                    options={langagesOptions}
+                                                    search
+                                                    placeholder='Select Language'
+                                                    value={langage}
+                                                />
+                                            </Segment>
+                                        </Segment.Group>
+                                    </Grid.Column>
+                                </Responsive>
+
+                                <p>
+                                    Now please write the translation of what you just said. You can write in English or in French.
+                                    If needed you can listen to what you've just recorded (and there is a player)
+
+                                </p>
                                 <Grid columns={1}>
                                     <Grid.Column>
-                                        <label>
-                                            Transcript:
                                         <TextArea placeholder="Transcript" name="transcript" value={this.state.transcript} onChange={this.handleChange} />
-                                        </label>
                                     </Grid.Column>
                                 </Grid>
+                                
                                 <Grid columns={1}>
                                     <Grid.Column>
                                         <Button type="submit" value="Submit"> Send </Button>

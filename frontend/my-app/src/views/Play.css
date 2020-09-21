@@ -1,9 +1,6 @@
 .Play {
-
-}
-
-.Play > div {
-    padding-top: 20vh;
+    text-align: center;
+    margin-top: 20vh;
 }
 
 .Play > div > .AudioPlayer {

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import './AudioPlayer.css';
+import { Grid, Button } from 'semantic-ui-react'
 
 class AudioPlayer extends React.Component {
     constructor(props) {
@@ -68,26 +69,27 @@ class AudioPlayer extends React.Component {
 
         const buttonClass = () => {
             if (src !== null) {
-                return playing ? "button selected" : "button active"
+                return playing ? "btn selected" : "btn active"
             }
             else {
-                return "button disabled"
+                return "btn disabled"
             }
         }
 
         return (
             <div className="AudioPlayer">
-                <audio
-                    id="player"
-                    ref="audioSource"
-                    src={src}
-                    lol="http://127.0.0.1:5000/files/myrecord.webm"
-                    onEnded={() => this.stop()}
-                />
 
-                <div className={buttonClass()} onClick={() => this.controlAudio()}>
+                
+                        <audio
+                            id="player"
+                            ref="audioSource"
+                            src={src}
+                            lol="http://127.0.0.1:5000/files/myrecord.webm"
+                            onEnded={() => this.stop()}
+                        />
+                <Button className={buttonClass()} onClick={() => this.controlAudio()}>
                     {playing ? "Stop" : "Listen"}
-                </div>
+                </Button>
             </div>
         );
     }

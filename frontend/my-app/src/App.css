@@ -11,60 +11,32 @@
     font-family: "Georgia", Times, sans-serif;
 }
 
-.left {
-    float: left;
-}
-
-.right {
-    float: right;
-}
-
-h1 {
-    margin: 0 auto;
-    padding: 40px;
-    font-size: 9vh;
-    font-weight: 500;
-}
-
-h2 {
-    margin: 0 auto;
-    padding: 2vh;
-    font-size: 7vh;
-    font-weight: 400;
-}
-
-p {
-    margin: auto;
-    width: 80%;
-    font-size: 5vh;
-}
-
-.button {
-    display: inline-block;
-    width: 15%;
-    padding: 2vh 1%;
-    margin: 2.5vh;
+.btn {
     font-size: 6vh;
+    width: 100% !important;
     cursor: pointer;
     user-select: none;
+    border-radius: 0px !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 
-    .button.disabled {
-        background-color: grey;
-        color: lightgrey;
-        border: solid 2px grey;
+    .btn.disabled {
+        background-color: grey !important;
+        color: lightgrey !important;
+        border: solid 2px grey !important;
     }
 
-    .button.selected {
-        background-color: white;
-        color: black;
-        border: solid 2px black;
+    .btn.selected {
+        background-color: white !important;
+        color: black !important;
+        border: solid 2px black !important;
     }
 
 
-    .button.active {
-        background-color: black;
-        color: white;
-        border: solid 2px black;
+    .btn.active {
+        background-color: black !important;
+        color: white !important;
+        border: solid 2px black !important;
     }

@@ -16,6 +16,6 @@
         display: block;
     }
 
-    .AudioRecorder > .sound-wave.hide {
+    .AudioRecorder > div > div >.sound-wave.hide {
         display: none;
     }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Grid, Segment } from 'semantic-ui-react';
 
 import './Play.css'
 import clip from '../resources/Jacouille_OKAY.mp3';
@@ -100,16 +101,25 @@ class Play extends React.Component {
                     )
                     :
                     (
-                        <div>
-                            <p>
-                                Now you are going to listen to a recording in a language you don't speak.
-                            </p>
-                            <p>
-                                Put the headphones on, click "Listen" and close your eyes ...
-                            </p>
+                        <div className="Play">
+                            <Grid container center colunms={2}>
+                                <Grid.Column>
+                                    <Segment vertical >
+                                        Now you are going to listen to a recording in a language you don't speak.
+                                    </Segment>
+                                    <Segment vertical>
+                                        Put the headphones on, click "Listen" and close your eyes ...
+                                    </Segment>
+                                    <Segment vertical>
+                                        <Grid center>
+                                            <Grid.Column floated="centered" width={6}>
+                                                <AudioPlayer onPlayed={() => { this.setState({ next: true }); }} source={recording ? recording.url : clip} />
+                                            </Grid.Column>
+                                        </Grid>
+                                    </Segment>
 
-                            <AudioPlayer onPlayed={() => { this.setState({ next: true }); }} source={ recording ? recording.url : clip } />
-
+                                </Grid.Column>
+                            </Grid>
                             <Navigator prev valid={next} next={() => { this.goNext() }} />
                         </div>
                     )

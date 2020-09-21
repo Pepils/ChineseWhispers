@@ -1,4 +1,5 @@
 import React from 'react';
+import { Grid, Segment } from 'semantic-ui-react';
 import './Record.css'
 
 import Navigator from '../components/Navigator'
@@ -84,41 +85,38 @@ class Record extends React.Component {
         
 
         return (
-            <div className="Record">
-                {processing ?
-                    (
-                        <Loading text="Processing ..." />
-                    ) : (
-                        <div className="container">
 
+            processing?
+            (
+                <Loading text = "Processing ..." />
+            ): (
+                <div className="Record">
+                    <Grid container center colunms={2}>
+                        <Grid.Column>
                             {step === 0 &&
-                                <div id="explanations">
-                                    <p>
+                                <div>
+                                    <Segment vertical >
                                         Now it's your turn to feed the poem: you will record the next 30 seconds of the story you just heard in your native language.
-                                    </p>
-                                    <br />
-                                    <p>
+                                    </Segment>
+                                    <Segment vertical >
                                         You can listen again to the recording by going back.
-                                    </p>
-                                    <br />
-                                    <p>
-                                        When you are ready, click on "GO".
-                                    </p>
+                                    </Segment>
+                                    <Segment vertical >
+                                            When you are ready, click on "GO".
+                                    </Segment>
                                 </div>
-                            }           
-                                <div id="recording">
-                                    <AudioRecorder startRecord={this.startRecord} onRecord={this.addRecord} />
-                                </div>
-                            <div id="listening" style={{display: "none"}}>
-                                <AudioPlayer startTime={3} source={record.blobURL} />
-                            </div>
+                            }
+                                <Segment vertical>
+                                    
+                                            <AudioRecorder startRecord={this.startRecord} onRecord={this.addRecord} />
 
-                            <Navigator prev={!recording} valid={record.blob !== null ? true : false} next={() => this.next()} />
-        
-                        </div >
-                    )
-                }
-            </div>
+                                </Segment>
+                        </Grid.Column>
+                    </Grid>
+                    <Navigator prev={!recording} valid={record.blob !== null ? true : false} next={() => this.next()} />
+
+                </div > 
+            )
         );
     }
 }

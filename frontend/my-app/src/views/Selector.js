@@ -1,17 +1,18 @@
 import React from 'react';
 import './Selector.css';
 import { withRouter } from "react-router-dom";
+import { Header, Grid, Input, TextArea, Form, Button, Segment } from 'semantic-ui-react'
 
 import Navigator from '../components/Navigator'
 import Loading from '../components/Loading'
 
 function LangItem(props) {
-    const classname = props.selected ? "button selected" : "button active";
+    const classname = props.selected ? "btn selected" : "btn active";
 
     return (
-        <div className={classname} onClick={ () => props.handleClick( props.lang ) } >
+        <Button className={classname} onClick={ () => props.handleClick( props.lang ) } >
             {props.lang.name}
-        </div>
+        </Button>
     );
 }
 
@@ -40,6 +41,14 @@ class Selector extends React.Component {
                 for (var i = 0; i < data.length; i++) {
                     lang.push(data[i]);
                 }
+
+                lang.sort(function (a, b) {
+                    var textA = a.name.toUpperCase();
+                    var textB = b.name.toUpperCase();
+                    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+                });
+
+                console.log(lang)
 
                 this.setState({
                     loading: false,
@@ -97,12 +106,14 @@ class Selector extends React.Component {
     render() {
 
         const languages = this.state.lang.map((lang, i) => (
+            <Grid.Column>
             <LangItem
                 key={i}
                 lang={lang}
                 selected={this.state.selected.includes(lang) === true}
                 handleClick={this.onSelect}
-            />
+                />
+            </Grid.Column>
         ))
         if (this.state.loading) {
             return (
@@ -111,17 +122,20 @@ class Selector extends React.Component {
         } else {
             return (
                 <div className="Selector">
-                    <h1> Hi! Welcome to Chinese Whispers </h1>
-                    <p>
-                        This is an interactive installation. Please select the languages you speak.
-                </p>
-                    <div className="lang-container">
+                    <Grid container centered columns={1}>
+                        <Grid.Column textAlign="center" >
+                            <Header as="h1"> Hi! Welcome to Chinese Whispers </Header>
+                        </Grid.Column>
+                        <Grid.Column textAlign="center">
+                            <Segment>
+                                This is an interactive installation. Please select the languages you speak.
+                            </Segment>
+                        </Grid.Column>
+                    </Grid>
+                    <Grid container columns={6} doubling>
                         {languages}
-                    </div>
+                    </Grid>
 
-                    <p>
-                        Click "Next" when you are done
-                </p>
                     <Navigator next={this.submit} valid={this.state.selected.length > 0} />
                 </div>
             )

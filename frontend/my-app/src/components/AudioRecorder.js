@@ -1,8 +1,9 @@
 import React from 'react';
+import { Grid, Button } from 'semantic-ui-react';
+import { ReactMic } from 'react-mic';
 
 import './AudioRecorder.css';
 
-import { ReactMic } from 'react-mic';
 
 class AudioRecorder extends React.Component {
     constructor(props) {
@@ -73,22 +74,29 @@ class AudioRecorder extends React.Component {
 
         return (
             <div className="AudioRecorder">
-
-                {recording && preamb &&
-                    <div className="counter">
-                        {counter}
-                    </div>
-                }
-    
-                <ReactMic
-                    record={recording}
-                    className={(recording && !preamb) ? "sound-wave" : "sound-wave hide"}
-                    backgroundColor="#000000"
-                    visualSetting={"sinewave"}
-                    strokeColor="#ffffff"
-                    onStop={(blob) => this.onStop(blob)}
-                />
-                <div className={recording ? "button selected" : "button active"} onClick={() => { recording ? this.stopRecording() : this.startRecording() }} > {recording ? "Stop" : "GO!"} </div>
+                <Grid center>
+                    <Grid.Column floated="centered">
+                        {recording && preamb &&
+                            <div className="counter">
+                                {counter}
+                            </div>
+                        }
+                
+                        <ReactMic
+                            record={recording}
+                            className={(recording && !preamb) ? "sound-wave" : "sound-wave hide"}
+                            backgroundColor="#000000"
+                            visualSetting={"sinewave"}
+                            strokeColor="#ffffff"
+                            onStop={(blob) => this.onStop(blob)}
+                        />
+                    </Grid.Column>
+                </Grid>
+                <Grid center>
+                    <Grid.Column floated="centered" width={6}>
+                        <Button className={recording ? "btn selected" : "btn active"} onClick={() => { recording ? this.stopRecording() : this.startRecording() }} > {recording ? "Stop" : "GO!"} </Button>
+                    </Grid.Column>
+                </Grid>
             </div>
         );
     }
