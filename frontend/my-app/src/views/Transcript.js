@@ -111,7 +111,7 @@ class Transcript extends React.Component {
         var n = d.getTime();
 
         const { poem_id, parent_id, recording, transcript, name, lang_id, lang } = this.state;
-        const filename = name + n;
+        const filename = name + n + '.wav';
         const formData = new FormData();
 
         formData.append("file", recording.blob);
