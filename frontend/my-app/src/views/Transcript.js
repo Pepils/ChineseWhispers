@@ -74,6 +74,8 @@ class Transcript extends React.Component {
             
     }
 
+    handleOnUpdate = (e, { width }) => this.setState({ width });
+
     loadLangages = () => {
         var xhr = new XMLHttpRequest();
         xhr.open('GET', process.env.REACT_APP_API_URL + '/langages');
@@ -153,8 +155,11 @@ class Transcript extends React.Component {
     }
 
     render() {
-        const { loading, langagesOptions, langage } = this.state;
-
+        const { width, loading, langagesOptions, langage } = this.state;
+        const textAlign = width >= Responsive.onlyTablet.minWidth ? 'left' : 'center';
+        console.log(width);
+        console.log(Responsive.onlyTablet)
+        console.log(textAlign);
         return (
             <div className="Transcript">
                 {loading ?
@@ -167,78 +172,42 @@ class Transcript extends React.Component {
                             
                             <Form onSubmit={this.handleSubmit}>
                                 
-                                <Responsive minWidth={Responsive.onlyTablet.minWidth} as={Grid} columns={2} container>
-                                    <Grid.Column>
-                                        <Segment.Group horizontal>
-                                            <Segment>
-                                                What is your name?
-                                            </Segment>
-                                                <Input name="name" placeholder="Name" type="text" value={this.state.name} onChange={this.handleChange} />
-
-                                        </Segment.Group>
+                                <Responsive as={Grid}
+                                    columns={2}
+                                    stackable
+                                    container
+                                    fireOnMount
+                                    onUpdate={this.handleOnUpdate}
+                                >
+                                    <Grid.Column textAlign={textAlign}>
+                                        What is your name?
                                     </Grid.Column>
-                                    <Grid.Column>
-                                        <Segment.Group horizontal>
-                                            <Segment >
-                                                    Which language will you record in? 
-                                            </Segment>
-                                            <Segment >
-                                                <Dropdown
-                                                    onChange={this.handleDropDown}
-                                                    button
-                                                    floating
-                                                    labeled
-                                                    options={langagesOptions}
-                                                    search
-                                                    placeholder='Select Language'
-                                                    value={langage}
-                                                />
-                                            </Segment>
-                                        </Segment.Group>
+                                    <Grid.Column textAlign={textAlign}>
+                                        <Input name="name" placeholder="Name" type="text" value={this.state.name} onChange={this.handleChange} />
+                                    </Grid.Column>
+                                    <Grid.Column textAlign={textAlign}>
+                                        Which language will you record in?
+                                    </Grid.Column>
+                                    <Grid.Column textAlign={textAlign}>
+                                        <Dropdown
+                                            onChange={this.handleDropDown}
+                                            button
+                                            floating
+                                            options={langagesOptions}
+                                            search
+                                            placeholder='Select Language'
+                                            value={langage}
+                                        />
                                     </Grid.Column>
                                 </Responsive>
-
-                                <Responsive {...Responsive.onlyMobile} as={Grid} columns={1} container>
-                                    <Grid.Column>
-                                        <Segment.Group horizontal>
-                                            <Segment>
-                                                What is your name?
-                                            </Segment>
-                                            <Input name="name" placeholder="Name" type="text" value={this.state.name} onChange={this.handleChange} />
-
-                                        </Segment.Group>
-                                        <Segment.Group horizontal>
-                                            <Segment >
-                                                Which language will you record in?
-                                            </Segment>
-                                            <Segment >
-                                                <Dropdown
-                                                    onChange={this.handleDropDown}
-                                                    button
-                                                    floating
-                                                    labeled
-                                                    options={langagesOptions}
-                                                    search
-                                                    placeholder='Select Language'
-                                                    value={langage}
-                                                />
-                                            </Segment>
-                                        </Segment.Group>
+                                <Grid columns={1} container>
+                                    <Grid.Column textAlign='justified'>
+                                            Now please write the translation of what you just said. You can write in English or in French.
+                                            If needed you can listen to what you've just recorded through the audio player below.
                                     </Grid.Column>
-                                </Responsive>
-
-                                <p>
-                                    Now please write the translation of what you just said. You can write in English or in French.
-                                    If needed you can listen to what you've just recorded (and there is a player)
-
-                                </p>
-                                <Grid columns={1}>
                                     <Grid.Column>
                                         <TextArea placeholder="Transcript" name="transcript" value={this.state.transcript} onChange={this.handleChange} />
                                     </Grid.Column>
-                                </Grid>
-                                
-                                <Grid columns={1}>
                                     <Grid.Column>
                                         <Button type="submit" value="Submit"> Send </Button>
                                     </Grid.Column>
