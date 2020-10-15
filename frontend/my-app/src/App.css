@@ -8,7 +8,21 @@
     background-size: cover;
     color: black;
     height: 100vh;
-    font-family: "Georgia", Times, sans-serif;
+    font-family: "helvetica", Times, sans-serif;
+}
+
+textarea, input, div.dropdown {
+    font-size: 6vh;
+    border-radius: 0px !important;
+    text-overflow: ellipsis;
+    background-color: white !important;
+    color: black !important;
+    border: solid 1px black !important;
+}
+
+::placeholder {
+    color: darkgray !important;
+    font-weight: 600;
 }
 
 .btn {
@@ -19,6 +33,9 @@
     border-radius: 0px !important;
     overflow: hidden;
     text-overflow: ellipsis;
+    background-color: white !important;
+    color: black !important;
+    border: solid 2px black !important;
 }
 
 
@@ -28,14 +45,14 @@
         border: solid 2px grey !important;
     }
 
-    .btn.selected {
+    .btn.active {
         background-color: white !important;
         color: black !important;
         border: solid 2px black !important;
     }
 
 
-    .btn.active {
+    .btn.selected {
         background-color: black !important;
         color: white !important;
         border: solid 2px black !important;

@@ -1,12 +1,13 @@
 .Transcript {
-    margin: 10vh 10vw;
-    height: 70vh;
+    padding: 10vh 10vw;
+    height: 80vh;
 }
 
 audio {
-    margin: 10vw 0;
+    margin: 2.5vh 0;
 }
 
 #submit {
-    margin-top: 10vw;
+    margin-top: 5vh;
+    margin-bottom: 0vh;
 }

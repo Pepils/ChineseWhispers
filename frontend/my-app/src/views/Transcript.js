@@ -60,7 +60,7 @@ class Transcript extends React.Component {
         if (this.state.name !== "" && this.state.transcript !== "" && this.state.lang_id) {
             this.postData();
             this.props.history.push({
-                pathname: '/finnish',
+                pathname: '/end',
                 state: {
                     parent_id: this.state.recording ? this.state.recording.id : null,
                     poem_id: this.state.recording ? this.state.recording.poem_id : null
@@ -139,7 +139,7 @@ class Transcript extends React.Component {
         });
         request.upload.addEventListener("progress", () => { console.log("Progressing ...") });
         request.upload.addEventListener("load", () => {
-            this.props.history.push('/finnish')
+            this.props.history.push('/end')
         });
 
         request.open("POST", process.env.REACT_APP_API_URL + "/recordings");
@@ -152,7 +152,6 @@ class Transcript extends React.Component {
 
         const SoundField = () => <audio controls="controls" src={recording.blobURL} controlsList="download" />
         SoundField.defaultProps = { label: 'File' }
-
 
         return (
             <div className="Transcript">
@@ -180,7 +179,7 @@ class Transcript extends React.Component {
                                         <Input name="name" placeholder="Name" type="text" value={this.state.name} onChange={this.handleChange} />
                                     </Grid.Column>
                                     <Grid.Column textAlign={textAlign}>
-                                        Which language will you record in?
+                                        What language did you record in?
                                     </Grid.Column>
                                     <Grid.Column textAlign={textAlign}>
                                         <Dropdown
@@ -203,8 +202,10 @@ class Transcript extends React.Component {
                                     <Grid.Row columns={2} container>
                                         <TextArea placeholder="Transcript" name="transcript" value={this.state.transcript} onChange={this.handleChange} />
                                     </Grid.Row>
-                                    <Grid.Row container textAlign="centered">
-                                        <Button id="submit" type="submit" value="Submit"> Send </Button>
+                                    <Grid.Row container textAlign="centered" >
+                                        <Grid.Column width={2}>
+                                            <Button className="btn" id="submit" type="submit" value="Submit"> Send </Button>
+                                        </Grid.Column>
                                     </Grid.Row>
                                 </Responsive>
                             </Form>

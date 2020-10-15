@@ -44,7 +44,7 @@ class App extends React.Component {
     startTimer = () => {
         if (this.timerActivity) clearTimeout(this.timerActivity);
 
-        this.timerActivity = setTimeout((): void => this.redirect(), 60 * 1000);
+        this.timerActivity = setTimeout((): void => this.redirect(), 600 * 1000);
         if (this.state.redirect)
             this.setState({redirect: false})
     };
@@ -72,7 +72,7 @@ class App extends React.Component {
                         <Route path="/player" render={(props) => <Play {...props} />} />
                         <Route path="/recorder" render={(props) => <Record {...props} />} />
                         <Route path="/transcript" render={(props) => <Transcript {...props} />} />
-                        <Route path="/finnish" component={Finnish} />
+                        <Route path="/end" component={Finnish} />
                         <Route path="/error" component={Error} />
                     </Switch>
                 </BrowserRouter>

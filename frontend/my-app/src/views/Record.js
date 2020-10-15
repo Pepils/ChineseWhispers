@@ -51,13 +51,14 @@ class Record extends React.Component {
                 recording: false,
                 processing: true
             });
+
+            this.next();
         } else {
             this.setState({
                 step: 0,
                 recording: false
             });
         }
-        this.next();
     }
 
     next = () => {
@@ -74,7 +75,7 @@ class Record extends React.Component {
                 }
             });
         } else {
-            this.props.history.push('/finnish')
+            this.props.history.push('/end')
         }
     }
 
@@ -96,7 +97,7 @@ class Record extends React.Component {
                             {step === 0 &&
                                 <div>
                                     <Segment vertical >
-                                        Now it's your turn to feed the poem: you will record the next 30 seconds of the story you just heard in your native language.
+                                        Now it's your turn to feed the poem: you will now record a brief message in your native language.Maybe you can get inspired by what you just heard.. 
                                     </Segment>
                                     <Segment vertical >
                                         You can listen again to the recording by going back.

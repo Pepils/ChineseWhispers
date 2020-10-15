@@ -38,9 +38,10 @@ class AudioRecorder extends React.Component {
             this.setState({
                 preamb: false
             });
-
+            this.activityTimer = setTimeout(this.stopRecording, 30 * 1000);
         }
     }
+
 
     startRecording = () => {
         if (this.props.startRecord)
@@ -57,6 +58,7 @@ class AudioRecorder extends React.Component {
     }
 
     stopRecording = () => {
+        clearTimeout(this.activityTimer);
         this.setState({
             recording: false
         });
