@@ -97,10 +97,7 @@ class Record extends React.Component {
                             {step === 0 &&
                                 <div>
                                     <Segment vertical >
-                                        Now it's your turn to feed the poem: you will now record a brief message in your native language.Maybe you can get inspired by what you just heard.. 
-                                    </Segment>
-                                    <Segment vertical >
-                                        You can listen again to the recording by going back.
+                                        Now it's your turn : you will now record a brief message in your native language. Maybe you can get inspired by what you just heard.. 
                                     </Segment>
                                     <Segment vertical >
                                             When you are ready, click on "GO".

@@ -124,7 +124,7 @@ class Selector extends React.Component {
                 <div className="Selector">
                     <Grid container centered columns={1}>
                         <Grid.Column textAlign="center" >
-                            <Header as="h1"> Hi! Welcome to Chinese Whispers </Header>
+                            <Header as="h1"> Welcome to Chinese Whispers </Header>
                         </Grid.Column>
                         <Grid.Column textAlign="center">
                             <Segment>
