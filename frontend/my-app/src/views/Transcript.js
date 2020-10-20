@@ -111,7 +111,7 @@ class Transcript extends React.Component {
         var n = d.getTime();
 
         const { poem_id, parent_id, recording, transcript, name, lang_id, lang } = this.state;
-        const filename = name + n + '.wav';
+        const filename = name + n + ".webm";
         const formData = new FormData();
 
         formData.append("file", recording.blob);
@@ -193,7 +193,7 @@ class Transcript extends React.Component {
                                         />
                                     </Grid.Column>
                                     <Grid.Row columns={2} textAlign='justified'>
-                                        Now please write the translation of what you just said. You can write in English or in French.
+                                        Now please write the translation of what you just said. You can write in English or in French.<br/>
                                         If needed you can listen to what you've just recorded through the audio player below.
                                     </Grid.Row>
                                     <Grid.Row columns={2} container textAlign='centered'>

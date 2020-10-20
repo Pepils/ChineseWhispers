@@ -104,12 +104,12 @@ class Play extends React.Component {
                         <div className="Play">
                             <Grid container center colunms={2}>
                                 <Grid.Column>
+                                    {/*
                                     <Segment vertical >
                                         Now you are going to listen to a recording in a language you don't speak.
                                     </Segment>
-                                    <Segment vertical>
-                                        Put the headphones on, click "Listen" and close your eyes ...
-                                    </Segment>
+                                    */}
+                                      <h1>  Click on "Listen" and close your eyes ... </h1>
                                     <Segment vertical>
                                         <Grid center>
                                             <Grid.Column floated="centered" width={6}>
