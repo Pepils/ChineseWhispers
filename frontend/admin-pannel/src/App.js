@@ -91,11 +91,11 @@ const myDataProvider = {
             myreq = {
                 method:'POST',
                 mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
+                //headers: {
+                    //'Content-Type': 'application/json',
+                 //   'Access-Control-Allow-Origin': '*'
                     // 'Content-Type': 'application/x-www-form-urlencoded',
-                },
+                //},
                 body: formData,
             }
         } catch (err) {
@@ -104,6 +104,7 @@ const myDataProvider = {
         return fetch(apiurl+"/recordings/"+params.data.id, myreq)
             .then( response => {
                 if (!response.ok) {
+                    console.log(response)
                     return Promise.reject("Missing data")
                 }
                 return dataProvider.update( resource, {
@@ -172,6 +173,7 @@ const RecordingEdit = props => (
             <FileInput source="newfilepath" >
                 <FileField source="src" title="title" />
             </FileInput>
+            <FileField source="url" target="_blank" title="Download Audio" download />
             <TextInput disabled source="url" />
             <SoundField source="url" />
             <ReferenceInput source="poem_id" reference="poems">
