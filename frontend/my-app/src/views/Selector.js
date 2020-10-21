@@ -48,6 +48,16 @@ class Selector extends React.Component {
                     return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
                 });
 
+                var other_obj = lang.filter(function (elem) {
+                    return elem.name == "Other";
+                })[0];
+
+                // Move the "Other" option to the end
+                if (other_obj) {
+                    lang.splice(lang.indexOf(other_obj))
+                    lang.push(other_obj);
+                }
+
                 console.log(lang)
 
                 this.setState({

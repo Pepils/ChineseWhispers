@@ -8,10 +8,7 @@ function Finnish(props) {
 
     return (
         <div className="Finnish">
-            <h1> Thank you for being part of this! </h1>
-            <h2>
-                Goodbye!
-            </h2>
+            <h1> Thank you ! </h1>
         </div>
     );
 }
