@@ -84,9 +84,9 @@ const myDataProvider = {
         let myreq = {}
         try {
             if (params.data.newfilepath) {
-                formData.append("filepath", params.data.newfilepath.title)
+                formData.append("filepath", '_'+params.data.newfilepath.title)
                 formData.append('file', params.data.newfilepath.rawFile)
-                params.data.filepath = params.data.newfilepath.title
+                params.data.filepath = '_' +params.data.newfilepath.title
             }
             myreq = {
                 method:'POST',
